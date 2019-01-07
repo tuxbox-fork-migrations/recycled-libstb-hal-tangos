@@ -18,7 +18,6 @@ SOURCE_FILES += manager/audio.c
 SOURCE_FILES += manager/video.c
 SOURCE_FILES += manager/chapter.c
 SOURCE_FILES += manager/subtitle.c
-SOURCE_FILES += output/output_subtitle.c
 SOURCE_FILES += output/output.c
 SOURCE_FILES += output/writer/common/pes.c
 SOURCE_FILES += output/writer/common/misc.c
@@ -62,8 +61,3 @@ SOURCE_FILES += \
 libeplayer3_arm_la_SOURCES = $(SOURCE_FILES)
 
 LIBEPLAYER3_LIBS = libeplayer3_arm.la -lpthread -lavformat -lavcodec -lavutil -lswresample
-
-bin_PROGRAMS = eplayer3
-eplayer3_SOURCES = main/exteplayer.c
-eplayer3_LDADD = $(LIBEPLAYER3_LIBS)
-eplayer3_DEPENDENCIES = libeplayer3_arm.la
