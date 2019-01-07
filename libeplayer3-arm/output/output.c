@@ -68,7 +68,6 @@ if (debug_level >= level) fprintf(stderr, x); } while (0)
 static Output_t *AvailableOutput[] =
 {
 	&LinuxDvbOutput,
-	&SubtitleOutput,
 	NULL
 };
 
@@ -90,7 +89,6 @@ static void printOutputCapabilities()
 	for (i = 0; AvailableOutput[i] != NULL; i++)
 	{
 		output_printf(10, "\t%s : ", AvailableOutput[i]->Name);
-
 		for (j = 0; AvailableOutput[i]->Capabilities[j] != NULL; j++)
 		{
 			output_printf(10, "%s ", AvailableOutput[i]->Capabilities[j]);
@@ -125,11 +123,6 @@ static void OutputAdd(Context_t *context, char *port)
 					context->output->video = AvailableOutput[i];
 					return;
 				}
-				else if (!strcmp("subtitle", port))
-				{
-					context->output->subtitle = AvailableOutput[i];
-					return;
-				}
 			}
 		}
 	}
@@ -146,10 +139,6 @@ static void OutputDel(Context_t *context, char *port)
 	else if (!strcmp("video", port))
 	{
 		context->output->video = NULL;
-	}
-	else if (!strcmp("subtitle", port))
-	{
-		context->output->subtitle = NULL;
 	}
 }
 
@@ -173,10 +162,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_OPEN, "audio");
 				}
-				if (context->playback->isSubtitle)
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_OPEN, "subtitle");
-				}
 			}
 			else
 			{
@@ -192,15 +177,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_CLOSE, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_CLOSE, "audio");
-				}
-
-				if (context->playback->isSubtitle)
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_CLOSE, "subtitle");
 				}
 			}
 			else
@@ -241,14 +220,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret = context->output->audio->Command(context, OUTPUT_PLAY, "audio");
 				}
-
-				if (!ret)
-				{
-					if (context->playback->isSubtitle)
-					{
-						ret = context->output->subtitle->Command(context, OUTPUT_PLAY, "subtitle");
-					}
-				}
 			}
 			else
 			{
@@ -264,15 +235,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_STOP, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_STOP, "audio");
-				}
-
-				if (context->playback->isSubtitle)
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_STOP, "subtitle");
 				}
 			}
 			else
@@ -289,15 +254,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_FLUSH, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_FLUSH, "audio");
-				}
-
-				if (context->playback->isSubtitle)
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_FLUSH, "subtitle");
 				}
 			}
 			else
@@ -314,15 +273,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_PAUSE, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_PAUSE, "audio");
-				}
-
-				if (context->playback->isSubtitle)
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_PAUSE, "subtitle");
 				}
 			}
 			else
@@ -339,7 +292,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_FASTFORWARD, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_FASTFORWARD, "audio");
@@ -359,7 +311,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_REVERSE, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_REVERSE, "audio");
@@ -379,15 +330,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_CONTINUE, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_CONTINUE, "audio");
-				}
-
-				if (context->playback->isSubtitle)
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_CONTINUE, "subtitle");
 				}
 			}
 			else
@@ -419,15 +364,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_CLEAR, "video");
 				}
-
 				if (context->playback->isAudio && (argument == NULL || *(char *) argument == 'a'))
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_CLEAR, "audio");
-				}
-
-				if (context->playback->isSubtitle && (argument == NULL || *(char *) argument == 's'))
-				{
-					ret |= context->output->subtitle->Command(context, OUTPUT_CLEAR, "subtitle");
 				}
 			}
 			else
@@ -444,7 +383,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					return context->output->video->Command(context, OUTPUT_PTS, argument);
 				}
-
 				if (context->playback->isAudio)
 				{
 					return context->output->audio->Command(context, OUTPUT_PTS, argument);
@@ -464,15 +402,9 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					return context->output->audio->Command(context, OUTPUT_SWITCH, "audio");
 				}
-
 				if (context->playback->isVideo)
 				{
 					return context->output->video->Command(context, OUTPUT_SWITCH, "video");
-				}
-
-				if (context->playback->isSubtitle)
-				{
-					return context->output->subtitle->Command(context, OUTPUT_SWITCH, "subtitle");
 				}
 			}
 			else
@@ -489,7 +421,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					ret |= context->output->video->Command(context, OUTPUT_SLOWMOTION, "video");
 				}
-
 				if (context->playback->isAudio)
 				{
 					ret |= context->output->audio->Command(context, OUTPUT_SLOWMOTION, "audio");
@@ -539,7 +470,6 @@ static int Command(Context_t *context, OutputCmd_t command, void *argument)
 				{
 					return context->output->video->Command(context, OUTPUT_GET_FRAME_COUNT, argument);
 				}
-
 				if (context->playback->isAudio)
 				{
 					return context->output->audio->Command(context, OUTPUT_GET_FRAME_COUNT, argument);
@@ -620,6 +550,5 @@ OutputHandler_t OutputHandler =
 	"Output",
 	NULL, //audio
 	NULL, //video
-	NULL, //subtitle
 	&Command
 };
