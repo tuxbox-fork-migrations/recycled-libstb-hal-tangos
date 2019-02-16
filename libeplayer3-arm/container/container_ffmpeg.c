@@ -306,7 +306,9 @@ static char *Codec2Encoding(int32_t codec_id, int32_t media_type, uint8_t *extra
 		case AV_CODEC_ID_MPEG1VIDEO:
 			return "V_MPEG1";
 		case AV_CODEC_ID_MPEG2VIDEO:
-			return "V_MPEG1";
+			return "V_MPEG2";
+		case AV_CODEC_ID_MJPEG:
+			return "V_MJPEG";
 		case AV_CODEC_ID_H263:
 		case AV_CODEC_ID_H263P:
 		case AV_CODEC_ID_H263I:
@@ -844,7 +846,7 @@ static void FFMPEGThread(Context_t *context)
 					else
 #endif
 					{
-						uint8_t skipPacket = 0;
+						bool skipPacket = false;
 						currentVideoPts = videoTrack->pts = pts = calcPts(cAVIdx, videoTrack->stream, packet.pts);
 						videoTrack->dts = dts = calcPts(cAVIdx, videoTrack->stream, packet.dts);
 
@@ -866,14 +868,14 @@ static void FFMPEGThread(Context_t *context)
 								{
 									// skip already injected VIDEO packet
 									ffmpeg_printf(200, "skip already injected VIDEO packet\n");
-									skipPacket = 1;
+									skipPacket = true;
 								}
 							}
 							else
 							{
 								// skip VIDEO packet with unknown DTS
 								ffmpeg_printf(200, "skip VIDEO packet with unknown DTS\n");
-								skipPacket = 1;
+								skipPacket = true;
 							}
 						}
 
