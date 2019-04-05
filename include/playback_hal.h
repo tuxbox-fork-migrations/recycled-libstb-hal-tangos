@@ -5,6 +5,8 @@
 #include "../libduckbox/playback_libeplayer3.h"
 #elif HAVE_SPARK_HARDWARE
 #include "../libspark/playback_libeplayer3.h"
+#elif HAVE_MIPS_HARDWARE
+#include "../libmipsbox/playback_libeplayer3.h"
 #elif HAVE_ARM_HARDWARE
 #if ENABLE_GSTREAMER_10
 #include "../libarmbox/playback_gst.h"

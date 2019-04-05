@@ -3,7 +3,11 @@ AM_CFLAGS = -Wall -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_LARGEFILE64_SOUR
 
 CXXFLAGS = -Wall
 
+if BOXTYPE_ARMBOX
 noinst_LTLIBRARIES = libeplayer3_arm.la
+else
+noinst_LTLIBRARIES = libeplayer3_mips.la
+endif
 
 AM_CPPFLAGS   = -I$(srcdir)/include
 AM_CPPFLAGS  += -I$(top_srcdir)/include
@@ -58,6 +62,12 @@ SOURCE_FILES += \
 	output/writer/mipsel/wmv.c \
 	output/writer/mipsel/vc1.c
 
+if BOXTYPE_ARMBOX
 libeplayer3_arm_la_SOURCES = $(SOURCE_FILES)
 
 LIBEPLAYER3_LIBS = libeplayer3_arm.la -lpthread -lavformat -lavcodec -lavutil -lswresample
+else
+libeplayer3_mips_la_SOURCES = $(SOURCE_FILES)
+
+LIBEPLAYER3_LIBS = libeplayer3_mips.la -lpthread -lavformat -lavcodec -lavutil -lswresample
+endif
