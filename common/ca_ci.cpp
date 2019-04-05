@@ -1444,7 +1444,7 @@ void cCA::slot_pollthread(void *c)
 
 	while (1)
 	{
-#if HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE	/* Armbox */
+#if HAVE_ARM_HARDWARE || HAVE_MIPS_HARDWARE /* Armbox/Mipsbox */
 
 		int len = 1024 *4;
 		eData status;
