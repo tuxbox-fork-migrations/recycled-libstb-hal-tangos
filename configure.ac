@@ -111,6 +111,7 @@ common/Makefile
 libarmbox/Makefile
 libazbox/Makefile
 libduckbox/Makefile
+libmipsbox/Makefile
 libdvbci/Makefile
 libeplayer3-arm/Makefile
 libeplayer3-sh4/Makefile
