@@ -115,6 +115,7 @@ libmipsbox/Makefile
 libdvbci/Makefile
 libeplayer3-arm/Makefile
 libeplayer3-sh4/Makefile
+libeplayer3-mips/Makefile
 libgeneric-pc/Makefile
 libraspi/Makefile
 libspark/Makefile
