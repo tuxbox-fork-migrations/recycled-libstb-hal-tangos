@@ -24,6 +24,7 @@ static Context_t *player = NULL;
 
 extern cAudio *audioDecoder;
 extern cVideo *videoDecoder;
+OpenThreads::Mutex cPlayback::mutex;
 
 //Used by Fileplay
 bool cPlayback::Open(playmode_t PlayMode)
@@ -50,9 +51,13 @@ bool cPlayback::Open(playmode_t PlayMode)
 	nPlaybackSpeed = 0;
 	init_jump = -1;
 
+	mutex.lock();
 	if (player)
+	{
 		free(player);
-	player = NULL;
+		player = NULL;
+	}
+	mutex.unlock();
 
 	player = (Context_t *) malloc(sizeof(Context_t));
 
@@ -82,8 +87,10 @@ void cPlayback::Close(void)
 	hal_info("%s\n", __func__);
 
 	//Dagobert: movieplayer does not call stop, it calls close ;)
+	mutex.lock();
 	if(playing)
 		Stop();
+	mutex.unlock();
 
 	if (decoders_closed)
 	{
@@ -756,9 +763,13 @@ cPlayback::~cPlayback()
 {
 	hal_info("%s\n", __func__);
 
+	mutex.lock();
 	if (player)
+	{
 		free(player);
-	player = NULL;
+		player = NULL;
+	}
+	mutex.unlock();
 }
 
 void cPlayback::RequestAbort()
@@ -766,8 +777,10 @@ void cPlayback::RequestAbort()
 	if (player && player->playback && player->playback->isPlaying)
 	{
 		hal_info("%s\n", __func__);
+		mutex.lock();
 		Stop();
 		//player->playback->abortRequested = 1;
+		mutex.unlock();
 		while (player->playback->isPlaying)
 			usleep(100000);
 	}
