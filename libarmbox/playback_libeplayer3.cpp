@@ -564,10 +564,10 @@ void cPlayback::FindAllPids(int *apids, unsigned int *ac3flags, unsigned int *nu
 							ac3flags[j] = 0;    //todo
 						std::string _language = "";
 						_language += std::string(_lang);
-						_language += " - ";
-						_language += "(";
-						_language += TrackList[i + 1];
-						_language += ")";
+						//_language += " - ";
+						//_language += "(";
+						//_language += TrackList[i + 1];
+						//_language += ")";
 						language[j] = _language;
 					}
 				}
