@@ -363,6 +363,11 @@ bool cPlayback::SetSpeed(int speed)
 	if (player && player->playback)
 	{
 		int result = 0;
+		if(nPlaybackSpeed == 0 && speed > 1)
+		{
+			result = player->playback->Command(player, PLAYBACK_CONTINUE, NULL);
+		}
+
 		nPlaybackSpeed = speed;
 
 		if (speed > 1)
