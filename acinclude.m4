@@ -333,6 +333,8 @@ AM_CONDITIONAL(BOXMODEL_VUPLUS_ALL, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL"
 AM_CONDITIONAL(BOXMODEL_VUPLUS_ARM, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k"  -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k")
 AM_CONDITIONAL(BOXMODEL_VUPLUS_MIPS, test "$BOXMODEL" = "vuduo")
 
+AM_CONDITIONAL(BOXMODEL_HISILICON, test "$BOXMODEL" = "hd60" -o "$BOXMODEL" = "hd61")
+
 if test "$BOXTYPE" = "azbox"; then
 	AC_DEFINE(HAVE_AZBOX_HARDWARE, 1, [building for an azbox])
 elif test "$BOXTYPE" = "tripledragon"; then
@@ -454,6 +456,13 @@ esac
 case "$BOXMODEL" in
 	vuduo)
 		AC_DEFINE(BOXMODEL_VUPLUS_MIPS, 1, [vuplus_mips])
+	;;
+esac
+
+# all hisilicon BOXMODELs
+case "$BOXMODEL" in
+	hd60|hd61)
+		AC_DEFINE(BOXMODEL_HISILICON, 1, [hisilicon])
 	;;
 esac
 ])
