@@ -77,7 +77,7 @@ public:
 
 	bool Open(playmode_t PlayMode);
 	void Close(void);
-	bool Start(char *filename, int vpid, int vtype, int apid, int ac3, int duration, std::string headers = "");
+	bool Start(char *filename, int vpid, int vtype, int apid, int ac3, int duration, std::string headers = "", std::string filename2 = "");
 	bool Start(std::string filename, std::string headers = "");
 	bool SetAPid(int pid, bool ac3 = false);
 	bool SetVPid(int /*pid*/);
