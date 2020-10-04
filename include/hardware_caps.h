@@ -29,7 +29,7 @@ typedef struct hw_caps
 	int has_SCART;
 	int has_SCART_input;
 	int has_YUV_cinch;
-	int has_button_vformat;
+	int can_cpufreq;
 	int can_shutdown;
 	int can_cec;
 	int can_ar_14_9;	/* video drivers have 14:9 aspect ratio mode */
@@ -41,7 +41,9 @@ typedef struct hw_caps
 	int display_can_set_brightness;
 	int display_can_deepstandby;
 	int display_has_statusline;
+	int display_has_colon;
 	int has_button_timer;
+	int has_button_vformat;
 	char boxvendor[64];
 	char boxname[64];
 	char boxarch[64];
