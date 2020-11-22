@@ -34,6 +34,8 @@ hw_caps_t *get_hwcaps(void)
 	caps.display_xres = 8;
 	caps.display_can_deepstandby = 0;
 	caps.display_has_statusline = 0;
+	caps.display_has_colon = 0;
+	strcpy(caps.startup_file, "");
 	strcpy(caps.boxvendor, "Generic");
 	strcpy(caps.boxname, "PC");
 	if (! uname(&u)){
