@@ -2,7 +2,7 @@
 #define __HDMI_CEC_H__
 
 /*
-	Copyright (C) 2018 TangoCash
+	Copyright (C) 2018-2021 TangoCash
 
 	License: GPLv2
 
@@ -34,6 +34,13 @@ struct cec_message
 	unsigned char length;
 } __attribute__((packed));
 
+struct cec_message_fb
+{
+	unsigned char address;
+	unsigned char length;
+	unsigned char data[256];
+} __attribute__((packed));
+
 struct addressinfo
 {
 	unsigned char logical;
@@ -56,7 +63,7 @@ private:
 	void run();
 	bool Start();
 	bool Stop();
-	void Receive();
+	void Receive(int what);
 	unsigned char physicalAddress[2];
 	bool autoview_cec_activ;
 	unsigned char deviceType, logicalAddress;
@@ -70,6 +77,9 @@ private:
 	void request_audio_status();
 	bool muted;
 	int volume;
+	bool fallback;
+	bool tv_off;
+	unsigned char audio_destination;
 protected:
 	bool running;
 public:
@@ -79,7 +89,7 @@ public:
 	void SetCECAutoView(bool);
 	void SetCECAutoStandby(bool);
 	void GetCECAddressInfo();
-	void SendCECMessage(struct cec_message &message);
+	void SendCECMessage(struct cec_message &message, int sleeptime = 10);
 	void SetCECState(bool state);
 	void ReportPhysicalAddress();
 	bool standby_cec_activ;
@@ -94,6 +104,11 @@ public:
 	{
 		return muted;
 	};
+	int GetAudioDestination()
+	{
+		return (int)audio_destination;
+	}
+	void SetAudioDestination(int audio_dest);
 };
 
 #endif // __HDMI_CEC_H__
