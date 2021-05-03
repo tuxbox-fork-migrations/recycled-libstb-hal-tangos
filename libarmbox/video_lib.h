@@ -161,6 +161,7 @@ class cVideo
 	private:
 		/* video device */
 		int fd;
+		bool fdd;
 		unsigned int devnum;
 		/* apparently we cannot query the driver's state
 		   => remember it */
@@ -194,7 +195,6 @@ class cVideo
 
 		/* used internally by dmx */
 		int64_t GetPTS(void);
-
 	public:
 		/* constructor & destructor */
 		cVideo(int mode, void *, void *, unsigned int unit = 0);
@@ -203,6 +203,11 @@ class cVideo
 		/* used internally by playback */
 		void openDevice(void);
 		void closeDevice(void);
+
+		void open_AVInput_Device(void);
+		void close_AVInput_Device(void);
+
+		void setAVInput(int val);
 
 		void * GetTVEnc() { return NULL; };
 		void * GetTVEncSD() { return NULL; };
