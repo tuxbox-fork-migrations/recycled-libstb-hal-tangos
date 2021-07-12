@@ -54,6 +54,11 @@ SUBDIRS += libarmbox
 libstb_hal_la_LIBADD += \
 	libarmbox/libarmbox.la
 else
+if BOXMODEL_MULTIBOXSE
+SUBDIRS += libarmbox
+libstb_hal_la_LIBADD += \
+	libarmbox/libarmbox.la
+else
 if BOXMODEL_HD60
 SUBDIRS += libarmbox
 libstb_hal_la_LIBADD += \
@@ -79,6 +84,7 @@ SUBDIRS += libarmbox libdvbci
 libstb_hal_la_LIBADD += \
 	libarmbox/libarmbox.la \
 	libdvbci/libdvbci.la
+endif
 endif
 endif
 endif
