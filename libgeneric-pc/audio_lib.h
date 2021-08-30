@@ -70,6 +70,7 @@ class cAudio : public OpenThreads::Thread
 		~cAudio(void);
 		int64_t getPts() { return curr_pts; }
 
+		void setAVInput(int val) { return; };
 		void *GetHandle() { return NULL; };
 		/* shut up */
 		int mute(bool remember = true) { return do_mute(true, remember); };
