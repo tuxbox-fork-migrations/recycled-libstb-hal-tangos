@@ -1861,6 +1861,10 @@ int32_t container_ffmpeg_init_av_context(Context_t *context, char *filename, uin
 	{
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 		avContextTab[AVIdx]->iformat->flags |= AVFMT_SEEK_TO_PTS;
+#else
+		if (!(avContextTab[AVIdx]->iformat->flags & AVFMT_SEEK_TO_PTS)) {
+			printf("[container_ffmpeg.c] - AVFMT_SEEK_TO_PTS not available - FIXME, FFMPEG 4.5 has to use DTS...\n");
+		}
 #endif
 		avContextTab[AVIdx]->flags = AVFMT_FLAG_GENPTS;
 	}
@@ -2412,7 +2416,11 @@ int32_t container_ffmpeg_update_tracks(Context_t *context, char *filename, int32
 							{
 								ffmpeg_printf(10, " Handle inject_as_pcm = %d\n", track.inject_as_pcm);
 
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 								AVCodec *codec = avcodec_find_decoder(get_codecpar(stream)->codec_id);
+#else
+								const AVCodec *codec = avcodec_find_decoder(get_codecpar(stream)->codec_id);
+#endif
 
 								int errorCode = avcodec_open2(track.avCodecCtx, codec, NULL);
 								if (codec != NULL && !errorCode)
