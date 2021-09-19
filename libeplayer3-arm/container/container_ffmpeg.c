@@ -1250,6 +1250,7 @@ static void FFMPEGThread(Context_t *context)
 
 				if (duration > 0.0) {
 					/* is there a decoder ? */
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 					if (((AVStream *) subtitleTrack->stream)->codec->codec)
 					{
 						AVSubtitle sub;
@@ -1279,6 +1280,7 @@ static void FFMPEGThread(Context_t *context)
 							}
 						}
 					}
+#endif
 				} /* duration */
 			}
 		}
@@ -1939,7 +1941,7 @@ static void container_ffmpeg_read_subtitle(Context_t * context, const char *file
 
 	if (access(subfile, R_OK))
 		return;
-
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 	AVFormatContext *subavfc = avformat_alloc_context();
 	int err = avformat_open_input(&subavfc, subfile, av_find_input_format(format), 0);
 	if (err != 0)
@@ -1986,7 +1988,7 @@ static void container_ffmpeg_read_subtitle(Context_t * context, const char *file
 	avcodec_close(c);
 	avformat_close_input(&subavfc);
 	avformat_free_context(subavfc);
-
+#endif
 	if(pid != -1)
 	{
 		Track_t Subtitle;
@@ -2760,6 +2762,7 @@ int32_t container_ffmpeg_update_tracks(Context_t *context, char *filename, int32
 
 						if (context->manager->subtitle)
 						{
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 							if (!stream->codec->codec)
 							{
 								stream->codec->codec = avcodec_find_decoder(stream->codec->codec_id);
@@ -2778,6 +2781,7 @@ int32_t container_ffmpeg_update_tracks(Context_t *context, char *filename, int32
 								/* konfetti: fixme: is this a reason to return with error? */
 								ffmpeg_err("failed to add subtitle track %d\n", n);
 							}
+#endif
 						}
 					}
 					break;
