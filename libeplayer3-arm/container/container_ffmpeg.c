@@ -1251,13 +1251,18 @@ static void FFMPEGThread(Context_t *context)
 				if (duration > 0.0) {
 					/* is there a decoder ? */
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-					if (((AVStream *) subtitleTrack->stream)->codec->codec)
+					AVCodecContext *c = ((AVStream *) subtitleTrack->stream)->codec;
+#else
+					AVCodecContext *c = avformat_alloc_context();
+					avcodec_parameters_to_context(c, ((AVStream *) subtitleTrack->stream)->codecpar);
+#endif
+					if (c->codec)
 					{
 						AVSubtitle sub;
 						memset(&sub, 0, sizeof(sub));
 						int got_sub_ptr;
 
-						if (avcodec_decode_subtitle2(((AVStream *) subtitleTrack->stream)->codec, &sub, &got_sub_ptr, &packet) < 0) {
+						if (avcodec_decode_subtitle2(c, &sub, &got_sub_ptr, &packet) < 0) {
 							ffmpeg_err("error decoding subtitle\n");
 						}
 
@@ -1266,7 +1271,7 @@ static void FFMPEGThread(Context_t *context)
 							case SUBTITLE_TEXT: // FIXME?
 							case SUBTITLE_ASS:
 							{
-								dvbsub_ass_write(((AVStream *) subtitleTrack->stream)->codec, &sub, pid);
+								dvbsub_ass_write(c, &sub, pid);
 								break;
 							}
 							case SUBTITLE_BITMAP:
@@ -1280,7 +1285,6 @@ static void FFMPEGThread(Context_t *context)
 							}
 						}
 					}
-#endif
 				} /* duration */
 			}
 		}
@@ -1941,7 +1945,7 @@ static void container_ffmpeg_read_subtitle(Context_t * context, const char *file
 
 	if (access(subfile, R_OK))
 		return;
-#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
+
 	AVFormatContext *subavfc = avformat_alloc_context();
 	int err = avformat_open_input(&subavfc, subfile, av_find_input_format(format), 0);
 	if (err != 0)
@@ -1955,8 +1959,12 @@ static void container_ffmpeg_read_subtitle(Context_t * context, const char *file
 		avformat_free_context(subavfc);
 		return;
 	}
-
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 	AVCodecContext *c = subavfc->streams[0]->codec;
+#else
+	AVCodecContext *c = avformat_alloc_context();
+	avcodec_parameters_to_context(c, subavfc->streams[0]->codecpar);
+#endif
 	AVCodec *codec = avcodec_find_decoder(c->codec_id);
 	if (!codec) {
 		avformat_free_context(subavfc);
@@ -1982,13 +1990,17 @@ static void container_ffmpeg_read_subtitle(Context_t * context, const char *file
 		{
 			dvbsub_ass_write(c, &sub, pid);
 		}
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
 		av_free_packet(&packet);
+#else
+		av_packet_unref(&packet);
+#endif
 	}
 
 	avcodec_close(c);
 	avformat_close_input(&subavfc);
 	avformat_free_context(subavfc);
-#endif
+
 	if(pid != -1)
 	{
 		Track_t Subtitle;
@@ -2763,25 +2775,30 @@ int32_t container_ffmpeg_update_tracks(Context_t *context, char *filename, int32
 						if (context->manager->subtitle)
 						{
 #if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(59,0,100)
-							if (!stream->codec->codec)
+							AVCodecContext *c = stream->codec;
+#else
+							AVCodecContext *c = avformat_alloc_context();
+							avcodec_parameters_to_context(c, stream->codecpar);
+#endif
+							if (!c)
 							{
-								stream->codec->codec = avcodec_find_decoder(stream->codec->codec_id);
-								if (!stream->codec->codec)
+								c->codec = avcodec_find_decoder(c->codec_id);
+								if (!c->codec)
 								{
-                                                                        ffmpeg_err("avcodec_find_decoder failed for subtitle track %d\n", n);
+                                    ffmpeg_err("avcodec_find_decoder failed for subtitle track %d\n", n);
 								}
-								else if (avcodec_open2(stream->codec, stream->codec->codec, NULL))
+								else if (avcodec_open2(c, c->codec, NULL))
 								{
 									ffmpeg_err("avcodec_open2 failed for subtitle track %d\n", n);
-									stream->codec->codec = NULL;
+									c->codec = NULL;
 								}
 							}
-							if (stream->codec->codec && context->manager->subtitle->Command(context, MANAGER_ADD, &track) < 0)
+							if (c->codec && context->manager->subtitle->Command(context, MANAGER_ADD, &track) < 0)
 							{
 								/* konfetti: fixme: is this a reason to return with error? */
 								ffmpeg_err("failed to add subtitle track %d\n", n);
 							}
-#endif
+
 						}
 					}
 					break;
