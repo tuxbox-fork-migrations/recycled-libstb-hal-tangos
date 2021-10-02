@@ -459,7 +459,8 @@ cVideo::cVideo(int, void *, void *, unsigned int unit)
 	saturation = -1;
 	hue = -1;
 	video_standby = 0;
-	if (unit > 1) {
+	if (unit > 3)
+	{
 		hal_info("%s: unit %d out of range, setting to 0\n", __func__, unit);
 		devnum = 0;
 	} else
