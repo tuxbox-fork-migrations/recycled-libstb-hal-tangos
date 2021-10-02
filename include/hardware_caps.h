@@ -32,6 +32,7 @@ typedef struct hw_caps
 	int has_YUV_cinch;
 	int can_pip;
 	int can_cpufreq;
+	int pip_devs;
 	int can_shutdown;
 	int can_cec;
 	int can_ar_14_9;	/* video drivers have 14:9 aspect ratio mode */
