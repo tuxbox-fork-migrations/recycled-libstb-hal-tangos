@@ -254,6 +254,7 @@ class cVideo
 		void SetControl(int, int);
 		void setContrast(int val);
 		void SetVideoMode(analog_mode_t mode);
+		void QuadPiP(bool active = false, int _x = 0, int _y = 0, int _w = 360, int _h = 288);
 		void SetDBDR(int) { return; };
 		void SetAudioHandle(void *) { return; };
 		void SetAutoModes(int [VIDEO_STD_MAX]) { return; };
