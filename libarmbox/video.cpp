@@ -78,8 +78,8 @@ enum
 	AUX
 };
 
-cVideo * videoDecoder = NULL;
-cVideo * pipDecoder = NULL;
+cVideo *videoDecoder = NULL;
+cVideo *pipVideoDecoder[3] = { NULL, NULL, NULL };
 
 int system_rev = 0;
 
