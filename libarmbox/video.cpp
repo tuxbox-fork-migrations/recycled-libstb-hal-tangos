@@ -140,7 +140,16 @@ static const char *VMPEG_dst_left[] = {
 	"/proc/stb/vmpeg/3/dst_left"
 };
 
-static const char *VMPEG_framerate[] = {
+static const char *VMPEG_dst_apply[] =
+{
+	"/proc/stb/vmpeg/0/dst_apply",
+	"/proc/stb/vmpeg/1/dst_apply",
+	"/proc/stb/vmpeg/2/dst_apply",
+	"/proc/stb/vmpeg/3/dst_apply"
+};
+
+static const char *VMPEG_framerate[] =
+{
 	"/proc/stb/vmpeg/0/framerate",
 	"/proc/stb/vmpeg/1/framerate",
 	"/proc/stb/vmpeg/2/framerate",
