@@ -54,6 +54,10 @@ extern cVideo *videoDecoder;
 		__func__, _errstr, fd, _revents, DMX_T[dmx_type], pid, flt); \
 } while(0);
 
+cDemux *videoDemux = NULL;
+cDemux *audioDemux = NULL;
+//cDemux *pcrDemux = NULL;
+
 cDemux *pipVideoDemux[3] = { NULL, NULL, NULL };
 cDemux *pipAudioDemux[3] = { NULL, NULL, NULL };
 
