@@ -45,6 +45,7 @@ extern "C" {
 #define DMX_BUF_SZ 0x4000
 
 cAudio * audioDecoder = NULL;
+cAudio *pipAudioDecoder[3] = { NULL, NULL, NULL };
 extern cDemux *audioDemux;
 static uint8_t *dmxbuf = NULL;
 static int bufpos;
@@ -59,7 +60,7 @@ static ao_sample_format sformat;
 static AVCodecContext *c = NULL;
 static AVCodecParameters *p = NULL;
 
-cAudio::cAudio(void *, void *, void *)
+cAudio::cAudio(void *, void *, void *, unsigned int unit)
 {
 	thread_started = false;
 	if (!HAL_nodec)

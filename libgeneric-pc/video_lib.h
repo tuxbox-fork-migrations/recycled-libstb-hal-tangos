@@ -158,6 +158,9 @@ class cVideo : public OpenThreads::Thread
 		cVideo(int mode, void *, void *, unsigned int unit = 0);
 		~cVideo(void);
 
+		void open_AVInput_Device(void) { return; };
+		void close_AVInput_Device(void) { return; };
+
 		void setAVInput(int) { return; };
 
 		void * GetTVEnc() { return NULL; };
@@ -197,6 +200,7 @@ class cVideo : public OpenThreads::Thread
 		void SetAudioDestination(int) {return; };
 		void StopPicture();
 		void Standby(unsigned int bOn);
+		void ShowPig(int) { return; };
 		void Pig(int x, int y, int w, int h, int osd_w = 1064, int osd_h = 600, int startx = 0, int starty = 0, int endx = 1279, int endy = 719);
 		void SetControl(int, int) { return; };
 		void setContrast(int val);

@@ -57,6 +57,8 @@ extern "C" {
 #define hal_info_c(args...) _hal_info(HAL_DEBUG_VIDEO, NULL, args)
 
 cVideo *videoDecoder = NULL;
+cVideo *pipVideoDecoder[3] = { NULL, NULL, NULL };
+
 extern cDemux *videoDemux;
 extern GLFbPC *glfb_priv;
 int system_rev = 0;
