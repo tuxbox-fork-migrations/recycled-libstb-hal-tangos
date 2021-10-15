@@ -158,7 +158,7 @@ class cVideo : public OpenThreads::Thread
 		cVideo(int mode, void *, void *, unsigned int unit = 0);
 		~cVideo(void);
 
-		void setAVInput(int val) { return; };
+		void setAVInput(int) { return; };
 
 		void * GetTVEnc() { return NULL; };
 		void * GetTVEncSD() { return NULL; };
@@ -194,7 +194,7 @@ class cVideo : public OpenThreads::Thread
 		bool SetCECMode(VIDEO_HDMI_CEC_MODE) { return true; };
 		void SetCECAutoView(bool) { return; };
 		void SetCECAutoStandby(bool) { return; };
-		void SetAudioDestination(int audio_dest) {return; };
+		void SetAudioDestination(int) {return; };
 		void StopPicture();
 		void Standby(unsigned int bOn);
 		void Pig(int x, int y, int w, int h, int osd_w = 1064, int osd_h = 600, int startx = 0, int starty = 0, int endx = 1279, int endy = 719);
