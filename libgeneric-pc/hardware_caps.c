@@ -27,8 +27,11 @@ hw_caps_t *get_hwcaps(void)
 
 	memset(&caps, 0, sizeof(hw_caps_t));
 
-	if (access("/dev/dvb/adapter0/video1", F_OK) != -1)
-		caps.can_pip = 1;
+	caps.pip_devs = 0;
+	if (access("/dev/dvb/adapter0/video1", F_OK) != -1) caps.pip_devs = 1;
+	if (access("/dev/dvb/adapter0/video2", F_OK) != -1) caps.pip_devs = 2;
+	if (access("/dev/dvb/adapter0/video3", F_OK) != -1) caps.pip_devs = 3;
+	if (caps.pip_devs > 0) caps.can_pip = 1;
 
 	initialized = 1;
 	caps.can_shutdown = 1;	/* for testing */

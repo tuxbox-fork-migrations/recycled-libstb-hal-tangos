@@ -66,11 +66,11 @@ class cAudio : public OpenThreads::Thread
 
 	public:
 		/* construct & destruct */
-		cAudio(void *, void *, void *);
+		cAudio(void *, void *, void *, unsigned int unit = 0);
 		~cAudio(void);
 		int64_t getPts() { return curr_pts; }
 
-		void setAVInput(int val) { return; };
+		void setAVInput(int) { return; };
 		void *GetHandle() { return NULL; };
 		/* shut up */
 		int mute(bool remember = true) { return do_mute(true, remember); };

@@ -52,6 +52,9 @@ cDemux *videoDemux = NULL;
 cDemux *audioDemux = NULL;
 //cDemux *pcrDemux = NULL;
 
+cDemux *pipVideoDemux[3] = { NULL, NULL, NULL };
+cDemux *pipAudioDemux[3] = { NULL, NULL, NULL };
+
 static const char *DMX_T[] = {
 	"DMX_INVALID",
 	"DMX_VIDEO",
