@@ -1,24 +1,8 @@
 #include <config.h>
-#if HAVE_TRIPLEDRAGON
-#include "../libtriple/playback_td.h"
-#elif HAVE_DUCKBOX_HARDWARE
-#include "../libduckbox/playback_libeplayer3.h"
-#elif HAVE_SPARK_HARDWARE
-#include "../libspark/playback_libeplayer3.h"
-#elif HAVE_ARM_HARDWARE
-#if ENABLE_GSTREAMER_10
-#include "../libarmbox/playback_gst.h"
-#else
-#if BOXMODEL_HISILICON
-#include "../libarmbox/playback_hisilicon.h"
-#else
+#if HAVE_ARM_HARDWARE
 #include "../libarmbox/playback_libeplayer3.h"
-#endif
-#endif
 #elif HAVE_MIPS_HARDWARE
 #include "../libmipsbox/playback_libeplayer3.h"
-#elif HAVE_AZBOX_HARDWARE
-#include "../libazbox/playback_lib.h"
 #elif HAVE_GENERIC_HARDWARE
 #if BOXMODEL_RASPI
 #include "../libraspi/playback_lib.h"
