@@ -22,10 +22,6 @@
 #include <cstdlib>
 #include <vector>
 #include <inttypes.h>
-/* at least on td, config.h needs to be included before... */
-#ifndef HAVE_TRIPLEDRAGON
-#include <linux/dvb/dmx.h>
-#else /* TRIPLEDRAGON */
 extern "C" {
 #include <hardware/xp/xp_osd_user.h>
 }
@@ -33,7 +29,6 @@ extern "C" {
 #undef DMX_FILTER_SIZE
 #endif
 #define DMX_FILTER_SIZE FILTER_LENGTH
-#endif /* TRIPLEDRAGON */
 
 #include <cs_types.h>
 #if BOXMODEL_VUULTIMO4K
