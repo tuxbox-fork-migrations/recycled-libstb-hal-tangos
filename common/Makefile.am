@@ -48,10 +48,10 @@ endif
 endif
 endif
 endif
+endif
 else
 libcommon_la_SOURCES = \
 	ca.cpp
-endif
 endif
 endif
 
