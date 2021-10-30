@@ -23,10 +23,6 @@
 #include <vector>
 #include <inttypes.h>
 #include <linux/dvb/dmx.h>
-#if defined DMX_FILTER_SIZE
-#undef DMX_FILTER_SIZE
-#endif
-#define DMX_FILTER_SIZE FILTER_LENGTH
 
 #include <cs_types.h>
 #if BOXMODEL_VUULTIMO4K
