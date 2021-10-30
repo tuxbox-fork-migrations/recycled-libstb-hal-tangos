@@ -100,8 +100,7 @@ common/Makefile
 libmipsbox/Makefile
 libarmbox/Makefile
 libdvbci/Makefile
-libeplayer3-mips/Makefile
-libeplayer3-arm/Makefile
+libeplayer3/Makefile
 libgeneric-pc/Makefile
 libraspi/Makefile
 tools/Makefile
