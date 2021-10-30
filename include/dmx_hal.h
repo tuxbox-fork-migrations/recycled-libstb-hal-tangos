@@ -22,9 +22,7 @@
 #include <cstdlib>
 #include <vector>
 #include <inttypes.h>
-extern "C" {
-#include <hardware/xp/xp_osd_user.h>
-}
+#include <linux/dvb/dmx.h>
 #if defined DMX_FILTER_SIZE
 #undef DMX_FILTER_SIZE
 #endif
