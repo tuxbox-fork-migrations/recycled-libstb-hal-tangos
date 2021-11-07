@@ -1,6 +1,6 @@
 # explicit defines for separate revision handling
 define(ver_major, 1)
-define(ver_minor, 2)
+define(ver_minor, 6)
 define(ver_micro, 0)
 
 # sync with current git
@@ -11,7 +11,7 @@ define(ver_git, m4_esyscmd([
 ]))
 
 AC_PACKAGE_NAME, PACKAGE_NAME_LIBSTB_HAL
-AC_INIT([Tuxbox-libstb-hal], [ver_major.ver_minor.ver_micro])
+AC_INIT([tangos-libstb-hal], [ver_major.ver_minor.ver_micro])
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([libstb-hal-config.h:config.h.in])
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES])
@@ -51,10 +51,6 @@ else
 	AC_DEFINE(USE_OPENGL,1,[use opengl instead of clutter])
 fi
 
-if test x"$BOXTYPE" = x"tripledragon"; then
-	PKG_CHECK_MODULES([DIRECTFB], [directfb])
-fi
-
 AC_ARG_ENABLE(gstreamer,
 	AS_HELP_STRING(--enable-gstreamer, use gstreamer 1.0 playback),
 	,[enable_gstreamer=no])
@@ -62,12 +58,6 @@ AC_ARG_ENABLE(gstreamer,
 AM_CONDITIONAL(ENABLE_GSTREAMER, test "$enable_gstreamer" = "yes")
 if test "$enable_gstreamer" = "yes"; then
 	AC_DEFINE(ENABLE_GSTREAMER, 1, [use gstreamer 1.0 playback])
-	PKG_CHECK_MODULES([GSTREAMER], [gstreamer-1.0])
-	PKG_CHECK_MODULES([GSTREAMER_AUDIO], [gstreamer-audio-1.0])
-	PKG_CHECK_MODULES([GSTREAMER_VIDEO], [gstreamer-video-1.0])
-fi
-
-if test x$BOXTYPE = xarmbox -a "$enable_gstreamer_10" = "yes"; then
 	PKG_CHECK_MODULES([GSTREAMER], [gstreamer-1.0])
 	PKG_CHECK_MODULES([GSTREAMER_AUDIO], [gstreamer-audio-1.0])
 	PKG_CHECK_MODULES([GSTREAMER_VIDEO], [gstreamer-video-1.0])
@@ -86,12 +76,12 @@ if test x$BOXTYPE = xgeneric -a x$BOXMODEL != xraspi; then
 fi
 
 AC_ARG_ENABLE(flv2mpeg4,
-	AS_HELP_STRING(--enable-flv2mpeg4, use flv2mpeg4 libeplayer3-arm),
+	AS_HELP_STRING(--enable-flv2mpeg4, use flv2mpeg4 libeplayer3),
 	,[enable_flv2mpeg4=no])
 
 AM_CONDITIONAL(ENABLE_FLV2MPEG4, test "$enable_flv2mpeg4" = "yes")
 if test "$enable_flv2mpeg4" = "yes"; then
-	AC_DEFINE(ENABLE_FLV2MPEG4, 1, [use flv2mpeg4 libeplayer3-arm])
+	AC_DEFINE(ENABLE_FLV2MPEG4, 1, [use flv2mpeg4 libeplayer3])
 fi
 
 AC_OUTPUT([
