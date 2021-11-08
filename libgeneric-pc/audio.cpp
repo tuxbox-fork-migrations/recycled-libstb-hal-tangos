@@ -44,7 +44,7 @@ extern "C" {
 /* my own buf 16k */
 #define DMX_BUF_SZ 0x4000
 
-cAudio * audioDecoder = NULL;
+cAudio *audioDecoder = NULL;
 cAudio *pipAudioDecoder[3] = { NULL, NULL, NULL };
 extern cDemux *audioDemux;
 static uint8_t *dmxbuf = NULL;
@@ -152,7 +152,7 @@ int cAudio::PrepareClipPlay(int ch, int srate, int bits, int le)
 	int driver;
 	int byte_format = le ? AO_FMT_LITTLE : AO_FMT_BIG;
 	if (sformat.bits != bits || sformat.channels != ch || sformat.rate != srate ||
-	    sformat.byte_format != byte_format || adevice == NULL)
+		sformat.byte_format != byte_format || adevice == NULL)
 	{
 		driver = ao_default_driver_id();
 		sformat.bits = bits;
@@ -167,7 +167,7 @@ int cAudio::PrepareClipPlay(int ch, int srate, int bits, int le)
 		hal_info("%s: changed params ch %d srate %d bits %d le %d adevice %p\n",
 			__func__, ch, srate, bits, le, adevice);;
 		hal_info("libao driver: %d name '%s' short '%s' author '%s'\n",
-				driver, ai->name, ai->short_name, ai->author);
+			driver, ai->name, ai->short_name, ai->author);
 	}
 	return 0;
 };
@@ -175,7 +175,8 @@ int cAudio::PrepareClipPlay(int ch, int srate, int bits, int le)
 int cAudio::WriteClip(unsigned char *buffer, int size)
 {
 	hal_debug("cAudio::%s buf 0x%p size %d\n", __func__, buffer, size);
-	if (!adevice) {
+	if (!adevice)
+	{
 		hal_info("%s: adevice not opened?\n", __func__);
 		return 0;
 	}
@@ -189,7 +190,8 @@ int cAudio::StopClip()
 #if 0
 	/* don't do anything - closing / reopening ao all the time makes for long delays
 	 * reinit on-demand (e.g. for changed parameters) instead */
-	if (!adevice) {
+	if (!adevice)
+	{
 		hal_info("%s: adevice not opened?\n", __func__);
 		return 0;
 	}
@@ -207,8 +209,10 @@ void cAudio::getAudioInfo(int &type, int &layer, int &freq, int &bitrate, int &m
 	bitrate = 0;	/* not used, but easy to get :-) */
 	mode = 0;	/* default: stereo */
 	printf("cAudio::getAudioInfo c %p\n", c);
-	if (c) {
-		switch (c->codec_id) {
+	if (c)
+	{
+		switch (c->codec_id)
+		{
 			case AV_CODEC_ID_MP2:
 				type = AUDIO_FMT_MPEG;
 				break;
@@ -238,8 +242,10 @@ void cAudio::getAudioInfo(int &type, int &layer, int &freq, int &bitrate, int &m
 		bitrate = c->bit_rate;
 		if (c->channels == 1)
 			mode = 3; /* for AV_CODEC_ID_MP2, only stereo / mono is detected for now */
-		if (c->codec_id != AV_CODEC_ID_MP2) {
-			switch (c->channel_layout) {
+		if (c->codec_id != AV_CODEC_ID_MP2)
+		{
+			switch (c->channel_layout)
+			{
 				case AV_CH_LAYOUT_MONO:
 					mode = 1;	// "C"
 					break;
@@ -266,12 +272,12 @@ void cAudio::getAudioInfo(int &type, int &layer, int &freq, int &bitrate, int &m
 					break;
 				default:
 					hal_info("%s: unknown ch_layout 0x%" PRIx64 "\n",
-						 __func__, c->channel_layout);
+						__func__, c->channel_layout);
 			}
 		}
 	}
 	hal_debug("%s t: %d l: %d f: %d b: %d m: %d codec_id: %x\n",
-		  __func__, type, layer, freq, bitrate, mode, c?c->codec_id:-1);
+		__func__, type, layer, freq, bitrate, mode, c ? c->codec_id : -1);
 };
 
 void cAudio::SetSRS(int /*iq_enable*/, int /*nmgr_enable*/, int /*iq_mode*/, int /*iq_level*/)
@@ -312,8 +318,10 @@ static int _my_read(void *, uint8_t *buf, int buf_size)
 int cAudio::my_read(uint8_t *buf, int buf_size)
 {
 	int tmp = 0;
-	if (audioDecoder && bufpos < DMX_BUF_SZ - 4096) {
-		while (bufpos < buf_size && ++tmp < 20) { /* retry max 20 times */
+	if (audioDecoder && bufpos < DMX_BUF_SZ - 4096)
+	{
+		while (bufpos < buf_size && ++tmp < 20)   /* retry max 20 times */
+		{
 			int ret = audioDemux->Read(dmxbuf + bufpos, DMX_BUF_SZ - bufpos, 10);
 			if (ret > 0)
 				bufpos += ret;
@@ -324,7 +332,8 @@ int cAudio::my_read(uint8_t *buf, int buf_size)
 	if (bufpos == 0)
 		return 0;
 	//hal_info("%s buf_size %d bufpos %d th %d tmp %d\n", __func__, buf_size, bufpos, thread_started, tmp);
-	if (bufpos > buf_size) {
+	if (bufpos > buf_size)
+	{
 		memcpy(buf, dmxbuf, buf_size);
 		memmove(dmxbuf, dmxbuf + buf_size, bufpos - buf_size);
 		bufpos -= buf_size;
@@ -382,10 +391,11 @@ void cAudio::run()
 	avfc = avformat_alloc_context();
 	avfc->pb = pIOCtx;
 	avfc->iformat = inp;
-	avfc->probesize = 188*5;
+	avfc->probesize = 188 * 5;
 	thread_started = true;
 
-	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0) {
+	if (avformat_open_input(&avfc, NULL, inp, NULL) < 0)
+	{
 		hal_info("%s: avformat_open_input() failed.\n", __func__);
 		goto out;
 	}
@@ -401,24 +411,28 @@ void cAudio::run()
 		hal_info("%s: stream 0 no audio codec? 0x%x\n", __func__, p->codec_type);
 
 	codec = avcodec_find_decoder(p->codec_id);
-	if (!codec) {
+	if (!codec)
+	{
 		hal_info("%s: Codec for %s not found\n", __func__, avcodec_get_name(p->codec_id));
 		goto out;
 	}
 	if (c)
 		av_free(c);
 	c = avcodec_alloc_context3(codec);
-	if (avcodec_open2(c, codec, NULL) < 0) {
+	if (avcodec_open2(c, codec, NULL) < 0)
+	{
 		hal_info("%s: avcodec_open2() failed\n", __func__);
 		goto out;
 	}
-	if(p->sample_rate == 0 || p->channels == 0){
+	if (p->sample_rate == 0 || p->channels == 0)
+	{
 		av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
-		hal_info("Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n",avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+		hal_info("Header missing %s, sample_fmt %d (%s) sample_rate %d channels %d\n", avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 		goto out2;
 	}
 	frame = av_frame_alloc();
-	if (!frame) {
+	if (!frame)
+	{
 		hal_info("%s: av_frame_alloc failed\n", __func__);
 		goto out2;
 	}
@@ -427,7 +441,7 @@ void cAudio::run()
 	o_sr = p->sample_rate;		/* 48000 */
 	o_layout = p->channel_layout;	/* AV_CH_LAYOUT_STEREO */
 	if (sformat.channels != o_ch || sformat.rate != o_sr ||
-	    sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
+		sformat.byte_format != AO_FMT_NATIVE || sformat.bits != 16 || adevice == NULL)
 	{
 		driver = ao_default_driver_id();
 		sformat.bits = 16;
@@ -441,7 +455,7 @@ void cAudio::run()
 		ai = ao_driver_info(driver);
 		hal_info("%s: changed params ch %d srate %d bits %d adevice %p\n",
 			__func__, o_ch, o_sr, 16, adevice);
-		if(ai)
+		if (ai)
 			hal_info("libao driver: %d name '%s' short '%s' author '%s'\n",
 				driver, ai->name, ai->short_name, ai->author);
 	}
@@ -453,17 +467,19 @@ void cAudio::run()
 #endif
 	av_get_sample_fmt_string(tmp, sizeof(tmp), c->sample_fmt);
 	hal_info("decoding %s, sample_fmt %d (%s) sample_rate %d channels %d\n",
-		 avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
+		avcodec_get_name(p->codec_id), c->sample_fmt, tmp, p->sample_rate, p->channels);
 	swr = swr_alloc_set_opts(swr,
-				 o_layout, AV_SAMPLE_FMT_S16, o_sr,			/* output */
-				 p->channel_layout, c->sample_fmt, p->sample_rate,	/* input */
-				 0, NULL);
-	if (! swr) {
+			o_layout, AV_SAMPLE_FMT_S16, o_sr,			/* output */
+			p->channel_layout, c->sample_fmt, p->sample_rate,	/* input */
+			0, NULL);
+	if (! swr)
+	{
 		hal_info("could not alloc resample context\n");
 		goto out3;
 	}
 	swr_init(swr);
-	while (thread_started) {
+	while (thread_started)
+	{
 		int gotframe = 0;
 		if (av_read_frame(avfc, &avpkt) < 0)
 			break;
@@ -471,26 +487,35 @@ void cAudio::run()
 		avcodec_decode_audio4(c, frame, &gotframe, &avpkt);
 #else
 		av_ret = avcodec_send_packet(c, &avpkt);
-		if (av_ret != 0 && av_ret != AVERROR(EAGAIN)) {
+		if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
+		{
 			hal_info("%s: avcodec_send_packet %d\n", __func__, av_ret);
-		}else {
+		}
+		else
+		{
 			av_ret = avcodec_receive_frame(c, frame);
-			if (av_ret != 0 && av_ret != AVERROR(EAGAIN)) {
+			if (av_ret != 0 && av_ret != AVERROR(EAGAIN))
+			{
 				hal_info("%s: avcodec_send_packet %d\n", __func__, av_ret);
-			}else {
+			}
+			else
+			{
 				gotframe = 1;
 			}
 		}
 #endif
 
-		if (gotframe && thread_started) {
+		if (gotframe && thread_started)
+		{
 			int out_linesize;
 			obuf_sz = av_rescale_rnd(swr_get_delay(swr, p->sample_rate) + frame->nb_samples, o_sr, p->sample_rate, AV_ROUND_UP);
-			if (obuf_sz > obuf_sz_max) {
+			if (obuf_sz > obuf_sz_max)
+			{
 				hal_info("obuf_sz: %d old: %d\n", obuf_sz, obuf_sz_max);
 				av_free(obuf);
 				if (av_samples_alloc(&obuf, &out_linesize, o_ch,
-							frame->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0) {
+						frame->nb_samples, AV_SAMPLE_FMT_S16, 1) < 0)
+				{
 					hal_info("av_samples_alloc failed\n");
 					av_packet_unref(&avpkt);
 					break; /* while (thread_started) */
@@ -498,13 +523,13 @@ void cAudio::run()
 				obuf_sz_max = obuf_sz;
 			}
 			obuf_sz = swr_convert(swr, &obuf, obuf_sz,
-					      (const uint8_t **)frame->extended_data, frame->nb_samples);
+					(const uint8_t **)frame->extended_data, frame->nb_samples);
 #if (LIBAVUTIL_VERSION_MAJOR < 54)
 			curr_pts = av_frame_get_best_effort_timestamp(frame);
 #else
 			curr_pts = frame->best_effort_timestamp;
 #endif
-			hal_debug("%s: pts 0x%" PRIx64 " %3f\n", __func__, curr_pts, curr_pts/90000.0);
+			hal_debug("%s: pts 0x%" PRIx64 " %3f\n", __func__, curr_pts, curr_pts / 90000.0);
 			int o_buf_sz = av_samples_get_buffer_size(&out_linesize, o_ch, obuf_sz, AV_SAMPLE_FMT_S16, 1);
 			if (o_buf_sz > 0)
 				ao_play(adevice, (char *)obuf, o_buf_sz);
@@ -514,13 +539,13 @@ void cAudio::run()
 	// ao_close(adevice); /* can take long :-( */
 	av_free(obuf);
 	swr_free(&swr);
- out3:
+out3:
 	av_frame_free(&frame);
- out2:
+out2:
 	avcodec_close(c);
 	av_free(c);
 	c = NULL;
- out:
+out:
 	avformat_close_input(&avfc);
 	av_free(pIOCtx->buffer);
 	av_free(pIOCtx);

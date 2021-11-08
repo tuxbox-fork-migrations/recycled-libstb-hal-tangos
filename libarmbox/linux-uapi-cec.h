@@ -87,7 +87,8 @@
  *		driver.
  * @tx_error_cnt: The number of 'Error' events. Set by the driver.
  */
-struct cec_msg {
+struct cec_msg
+{
 	__u64 tx_ts;
 	__u64 rx_ts;
 	__u32 len;
@@ -150,7 +151,7 @@ static inline bool cec_msg_is_broadcast(const struct cec_msg *msg)
  * message) and the initiator and destination are filled in.
  */
 static inline void cec_msg_init(struct cec_msg *msg,
-				__u8 initiator, __u8 destination)
+	__u8 initiator, __u8 destination)
 {
 	memset(msg, 0, sizeof(*msg));
 	msg->msg[0] = (initiator << 4) | destination;
@@ -167,11 +168,11 @@ static inline void cec_msg_init(struct cec_msg *msg,
  * case the change is done in place.
  */
 static inline void cec_msg_set_reply_to(struct cec_msg *msg,
-					struct cec_msg *orig)
+	struct cec_msg *orig)
 {
 	/* The destination becomes the initiator and vice versa */
 	msg->msg[0] = (cec_msg_destination(orig) << 4) |
-		      cec_msg_initiator(orig);
+		cec_msg_initiator(orig);
 	msg->reply = msg->timeout = 0;
 }
 
@@ -242,18 +243,18 @@ static inline bool cec_msg_status_is_ok(const struct cec_msg *msg)
 
 #define CEC_LOG_ADDR_MASK_TV		(1 << CEC_LOG_ADDR_TV)
 #define CEC_LOG_ADDR_MASK_RECORD	((1 << CEC_LOG_ADDR_RECORD_1) | \
-					 (1 << CEC_LOG_ADDR_RECORD_2) | \
-					 (1 << CEC_LOG_ADDR_RECORD_3))
+	(1 << CEC_LOG_ADDR_RECORD_2) | \
+	(1 << CEC_LOG_ADDR_RECORD_3))
 #define CEC_LOG_ADDR_MASK_TUNER		((1 << CEC_LOG_ADDR_TUNER_1) | \
-					 (1 << CEC_LOG_ADDR_TUNER_2) | \
-					 (1 << CEC_LOG_ADDR_TUNER_3) | \
-					 (1 << CEC_LOG_ADDR_TUNER_4))
+	(1 << CEC_LOG_ADDR_TUNER_2) | \
+	(1 << CEC_LOG_ADDR_TUNER_3) | \
+	(1 << CEC_LOG_ADDR_TUNER_4))
 #define CEC_LOG_ADDR_MASK_PLAYBACK	((1 << CEC_LOG_ADDR_PLAYBACK_1) | \
-					 (1 << CEC_LOG_ADDR_PLAYBACK_2) | \
-					 (1 << CEC_LOG_ADDR_PLAYBACK_3))
+	(1 << CEC_LOG_ADDR_PLAYBACK_2) | \
+	(1 << CEC_LOG_ADDR_PLAYBACK_3))
 #define CEC_LOG_ADDR_MASK_AUDIOSYSTEM	(1 << CEC_LOG_ADDR_AUDIOSYSTEM)
 #define CEC_LOG_ADDR_MASK_BACKUP	((1 << CEC_LOG_ADDR_BACKUP_1) | \
-					 (1 << CEC_LOG_ADDR_BACKUP_2))
+	(1 << CEC_LOG_ADDR_BACKUP_2))
 #define CEC_LOG_ADDR_MASK_SPECIFIC	(1 << CEC_LOG_ADDR_SPECIFIC)
 #define CEC_LOG_ADDR_MASK_UNREGISTERED	(1 << CEC_LOG_ADDR_UNREGISTERED)
 
@@ -347,7 +348,8 @@ static inline bool cec_is_unconfigured(__u16 log_addr_mask)
  * @capabilities: capabilities of the CEC adapter.
  * @version: version of the CEC adapter framework.
  */
-struct cec_caps {
+struct cec_caps
+{
 	char driver[32];
 	char name[32];
 	__u32 available_log_addrs;
@@ -373,7 +375,8 @@ struct cec_caps {
  *	address. Set by the caller.
  * @features:	CEC 2.0: The logical address features. Set by the caller.
  */
-struct cec_log_addrs {
+struct cec_log_addrs
+{
 	__u8 log_addr[CEC_MAX_LOG_ADDRS];
 	__u16 log_addr_mask;
 	__u8 cec_version;
@@ -409,7 +412,8 @@ struct cec_log_addrs {
  * @phys_addr: the current physical address
  * @log_addr_mask: the current logical address mask
  */
-struct cec_event_state_change {
+struct cec_event_state_change
+{
 	__u16 phys_addr;
 	__u16 log_addr_mask;
 };
@@ -418,7 +422,8 @@ struct cec_event_state_change {
  * struct cec_event_lost_msgs - tells you how many messages were lost due.
  * @lost_msgs: how many messages were lost.
  */
-struct cec_event_lost_msgs {
+struct cec_event_lost_msgs
+{
 	__u32 lost_msgs;
 };
 
@@ -431,11 +436,13 @@ struct cec_event_lost_msgs {
  * @lost_msgs: the event payload for CEC_EVENT_LOST_MSGS.
  * @raw: array to pad the union.
  */
-struct cec_event {
+struct cec_event
+{
 	__u64 ts;
 	__u32 event;
 	__u32 flags;
-	union {
+	union
+	{
 		struct cec_event_state_change state_change;
 		struct cec_event_lost_msgs lost_msgs;
 		__u32 raw[16];

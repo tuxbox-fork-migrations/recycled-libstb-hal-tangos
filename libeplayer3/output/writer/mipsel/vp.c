@@ -150,8 +150,10 @@ static int writeData(WriterAVCallData_t *call, bool is_vp6, bool is_vp9)
 		int bytes = payload_len - 10 - 8;
 		UpdatePesHeaderPayloadSize(PesHeader, payload_len);
 		// pes header
-		if (pes_header_len != (unsigned)WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len)) return -1;
-		if (bytes != WriteExt(call->WriteV, call->fd, call->data, bytes)) return -1;
+		if (pes_header_len != (unsigned)WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len))
+			return -1;
+		if (bytes != WriteExt(call->WriteV, call->fd, call->data, bytes))
+			return -1;
 
 		offs += bytes;
 
@@ -177,8 +179,10 @@ static int writeData(WriterAVCallData_t *call, bool is_vp6, bool is_vp9)
 
 			UpdatePesHeaderPayloadSize(PesHeader, wr + 3);
 
-			if (pes_header_len != (unsigned)WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len)) return -1;
-			if (wr != WriteExt(call->WriteV, call->fd, call->data + offs, wr)) return -1;
+			if (pes_header_len != (unsigned)WriteExt(call->WriteV, call->fd, PesHeader, pes_header_len))
+				return -1;
+			if (wr != WriteExt(call->WriteV, call->fd, call->data + offs, wr))
+				return -1;
 
 			bytes += wr;
 			offs += wr;
@@ -209,7 +213,8 @@ static int writeData(WriterAVCallData_t *call, bool is_vp6, bool is_vp9)
 		PesHeader[29] = 0xFF;
 		PesHeader[33] = 0x85;
 
-		if (pes_header_len != (unsigned)WriteExt(call->WriteV, call->fd, PesHeader, 184)) return -1;
+		if (pes_header_len != (unsigned)WriteExt(call->WriteV, call->fd, PesHeader, 184))
+			return -1;
 
 		return 1;
 	}

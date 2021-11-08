@@ -82,7 +82,7 @@ void cPlayback::Close(void)
 	hal_info("%s\n", __func__);
 
 	//Dagobert: movieplayer does not call stop, it calls close ;)
-	if(playing)
+	if (playing)
 		Stop();
 
 	if (decoders_closed)
@@ -151,7 +151,7 @@ bool cPlayback::Start(char *filename, int vpid, int vtype, int apid, int ac3, in
 			//AUDIO
 			if (player && player->manager && player->manager->audio)
 			{
-				char ** TrackList = NULL;
+				char **TrackList = NULL;
 				player->manager->audio->Command(player, MANAGER_LIST, &TrackList);
 				if (TrackList != NULL)
 				{
@@ -170,13 +170,13 @@ bool cPlayback::Start(char *filename, int vpid, int vtype, int apid, int ac3, in
 			//SUB
 			if (player && player->manager && player->manager->subtitle)
 			{
-				char ** TrackList = NULL;
+				char **TrackList = NULL;
 				player->manager->subtitle->Command(player, MANAGER_LIST, &TrackList);
 				if (TrackList != NULL)
 				{
 					printf("SubtitleTrack List\n");
 					int i = 0;
-					for (i = 0; TrackList[i] != NULL; i+=2)
+					for (i = 0; TrackList[i] != NULL; i += 2)
 					{
 						printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
 						free(TrackList[i]);
@@ -210,7 +210,7 @@ bool cPlayback::Start(char *filename, int vpid, int vtype, int apid, int ac3, in
 			//Chapters
 			if (player && player->manager && player->manager->chapter)
 			{
-				char ** TrackList = NULL;
+				char **TrackList = NULL;
 				player->manager->chapter->Command(player, MANAGER_LIST, &TrackList);
 				if (TrackList != NULL)
 				{
@@ -614,36 +614,36 @@ void cPlayback::FindAllTeletextsubtitlePids(int */*pids*/, unsigned int *numpids
 	//int max_numpids = *numpids;
 	*numpids = 0;
 
-/*	if (player && player->manager && player->manager->teletext)
-	{
-		char **TrackList = NULL;
-		player->manager->teletext->Command(player, MANAGER_LIST, &TrackList);
-		if (TrackList != NULL)
+	/*	if (player && player->manager && player->manager->teletext)
 		{
-			printf("Teletext List\n");
-			int i = 0, j = 0;
-			for (i = 0, j = 0; TrackList[i] != NULL; i += 2)
+			char **TrackList = NULL;
+			player->manager->teletext->Command(player, MANAGER_LIST, &TrackList);
+			if (TrackList != NULL)
 			{
-				int type = 0;
-				printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
-				if (j < max_numpids)
+				printf("Teletext List\n");
+				int i = 0, j = 0;
+				for (i = 0, j = 0; TrackList[i] != NULL; i += 2)
 				{
-					int _pid;
-					if (2 != sscanf(TrackList[i], "%d %*s %d %*d %*d", &_pid, &type))
-						continue;
-					if (type != 2 && type != 5) // return subtitles only
-						continue;
-					pids[j] = _pid;
-					language[j] = std::string(TrackList[i]);
-					j++;
+					int type = 0;
+					printf("\t%s - %s\n", TrackList[i], TrackList[i + 1]);
+					if (j < max_numpids)
+					{
+						int _pid;
+						if (2 != sscanf(TrackList[i], "%d %*s %d %*d %*d", &_pid, &type))
+							continue;
+						if (type != 2 && type != 5) // return subtitles only
+							continue;
+						pids[j] = _pid;
+						language[j] = std::string(TrackList[i]);
+						j++;
+					}
+					free(TrackList[i]);
+					free(TrackList[i + 1]);
 				}
-				free(TrackList[i]);
-				free(TrackList[i + 1]);
+				free(TrackList);
+				*numpids = j;
 			}
-			free(TrackList);
-			*numpids = j;
-		}
-	} */
+		} */
 }
 
 int cPlayback::GetTeletextPid(void)
@@ -651,31 +651,31 @@ int cPlayback::GetTeletextPid(void)
 	hal_info("%s\n", __func__);
 	int pid = -1;
 
-/*	if (player && player->manager && player->manager->teletext)
-	{
-		char **TrackList = NULL;
-		player->manager->teletext->Command(player, MANAGER_LIST, &TrackList);
-		if (TrackList != NULL)
+	/*	if (player && player->manager && player->manager->teletext)
 		{
-			printf("Teletext List\n");
-			int i = 0;
-			for (i = 0; TrackList[i] != NULL; i += 2)
+			char **TrackList = NULL;
+			player->manager->teletext->Command(player, MANAGER_LIST, &TrackList);
+			if (TrackList != NULL)
 			{
-				int type = 0;
-				printf("\t%s - %s\n", TrackList[i], TrackList[i+1]);
-				if (pid < 0)
+				printf("Teletext List\n");
+				int i = 0;
+				for (i = 0; TrackList[i] != NULL; i += 2)
 				{
-					if (2 != sscanf(TrackList[i], "%*d %d %*s %d %*d %*d", &pid, &type))
-						continue;
-					if (type != 1)
-						pid = -1;
+					int type = 0;
+					printf("\t%s - %s\n", TrackList[i], TrackList[i+1]);
+					if (pid < 0)
+					{
+						if (2 != sscanf(TrackList[i], "%*d %d %*s %d %*d %*d", &pid, &type))
+							continue;
+						if (type != 1)
+							pid = -1;
+					}
+					free(TrackList[i]);
+					free(TrackList[i + 1]);
 				}
-				free(TrackList[i]);
-				free(TrackList[i + 1]);
+				free(TrackList);
 			}
-			free(TrackList);
-		}
-	} */
+		} */
 
 	printf("teletext pid id %d (0x%x)\n", pid, pid);
 	return pid;

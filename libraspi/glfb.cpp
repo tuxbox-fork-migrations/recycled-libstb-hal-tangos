@@ -130,7 +130,8 @@ void GLFramebuffer::setup()
 	image = &osd_buf[0];
 	/* initialize to half-transparent grey */
 	memset(image, 0x7f, osd_buf.size());
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; i++)
+	{
 		res[i] = vc_dispmanx_resource_create(type, width, height, &vc_img_ptr[i]);
 		CHECK(res[i]);
 	}
@@ -142,15 +143,15 @@ void GLFramebuffer::setup()
 	vc_dispmanx_rect_set(&src_rect, 0, 0, width << 16, height << 16);
 	vc_dispmanx_rect_set(&dsp_rect, 0, 0, info.width, info.height);
 	element = vc_dispmanx_element_add(update,
-					  display,
-					  2000 /*layer*/,
-					  &dsp_rect,
-					  res[curr_res],
-					  &src_rect,
-					  DISPMANX_PROTECTION_NONE,
-					  &alpha,
-					  NULL,
-					  DISPMANX_NO_ROTATE);
+			display,
+			2000 /*layer*/,
+			&dsp_rect,
+			res[curr_res],
+			&src_rect,
+			DISPMANX_PROTECTION_NONE,
+			&alpha,
+			NULL,
+			DISPMANX_NO_ROTATE);
 	ret = vc_dispmanx_update_submit_sync(update);
 	CHECK(ret == 0);
 	curr_res = !curr_res;

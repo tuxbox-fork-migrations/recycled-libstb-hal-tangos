@@ -18,22 +18,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
- 
+
 #define MINMALLOC 4096
 #include <ctype.h>
 
-char* ostrshrink(char* value)
+char *ostrshrink(char *value)
 {
 	int len = 0;
-	char* buf = NULL;
+	char *buf = NULL;
 
-	if(value == NULL) return NULL;
+	if (value == NULL)
+		return NULL;
 
 	len = strlen(value);
-	if(len == 0) return value;
+	if (len == 0)
+		return value;
 
 	buf = malloc(len + 1);
-	if(buf == NULL)
+	if (buf == NULL)
 		return value;
 
 	memcpy(buf, value, len);
@@ -43,12 +45,12 @@ char* ostrshrink(char* value)
 	return buf;
 }
 
-char* oitoa(int value)
+char *oitoa(int value)
 {
 	char *buf = NULL;
 
 	buf = malloc(MINMALLOC);
-	if(buf == NULL)
+	if (buf == NULL)
 	{
 		err("no mem");
 		return NULL;
@@ -60,12 +62,12 @@ char* oitoa(int value)
 	return buf;
 }
 
-char* olutoa(unsigned long value)
+char *olutoa(unsigned long value)
 {
 	char *buf = NULL;
 
 	buf = malloc(MINMALLOC);
-	if(buf == NULL)
+	if (buf == NULL)
 	{
 		err("no mem");
 		return NULL;
@@ -77,12 +79,12 @@ char* olutoa(unsigned long value)
 	return buf;
 }
 
-char* ollutoa(uint64_t value)
+char *ollutoa(uint64_t value)
 {
 	char *buf = NULL;
 
 	buf = malloc(MINMALLOC);
-	if(buf == NULL)
+	if (buf == NULL)
 	{
 		err("no mem");
 		return NULL;
@@ -94,12 +96,12 @@ char* ollutoa(uint64_t value)
 	return buf;
 }
 
-char* oitoa64(off64_t value)
+char *oitoa64(off64_t value)
 {
 	char *buf = NULL;
 
 	buf = malloc(MINMALLOC);
-	if(buf == NULL)
+	if (buf == NULL)
 	{
 		err("no mem");
 		return NULL;
@@ -111,39 +113,43 @@ char* oitoa64(off64_t value)
 	return buf;
 }
 
-int file_exist(char* filename)
+int file_exist(char *filename)
 {
-	if(access(filename, F_OK) == 0)
+	if (access(filename, F_OK) == 0)
 		return 1;
 	else
 		return 0;
 }
 
-char* strstrip(char *text)
+char *strstrip(char *text)
 {
-	char* tmpstr = text;
+	char *tmpstr = text;
 
-	if(text == NULL) return NULL;
+	if (text == NULL)
+		return NULL;
 	int len = strlen(text);
 
-	while(isspace(tmpstr[len - 1])) tmpstr[--len] = '\0';
-	while(*tmpstr && isspace(*tmpstr)) ++tmpstr, --len;
+	while (isspace(tmpstr[len - 1]))
+		tmpstr[--len] = '\0';
+	while (*tmpstr && isspace(*tmpstr))
+		++tmpstr, --len;
 
-	if(text != tmpstr) memmove(text, tmpstr, len + 1);
+	if (text != tmpstr)
+		memmove(text, tmpstr, len + 1);
 
 	return text;
 }
 
-char* string_strip_whitechars(char *text)
+char *string_strip_whitechars(char *text)
 {
 	char *p1 = text, *p2 = text;
 
-	if(text == NULL)
+	if (text == NULL)
 		return NULL;
 
-	while(*p1 != '\0')
+	while (*p1 != '\0')
 	{
-		if(*p1 == ' ' && *(p1 + 1) == ' ')
+		if (*p1 == ' ' && *(p1 + 1) == ' ')
 			++p1;
 		else
 			*p2++ = *p1++;
@@ -153,37 +159,37 @@ char* string_strip_whitechars(char *text)
 	return text;
 }
 
-char* readfiletomem(const char* filename, int flag)
+char *readfiletomem(const char *filename, int flag)
 {
 	FILE *fd = NULL;
 	char *fileline = NULL, *buf = NULL, *tmpbuf = NULL;
 	int bufsize = 0, bufoldsize = 0;
 
 	fileline = malloc(MINMALLOC);
-	if(fileline == NULL)
+	if (fileline == NULL)
 	{
 //		err("no mem");
 		return NULL;
 	}
 
 	fd = fopen(filename, "r");
-	if(fd == NULL)
+	if (fd == NULL)
 	{
 //		perr("can't open %s", filename);
 		free(fileline);
 		return NULL;
 	}
 
-	while(fgets(fileline, MINMALLOC, fd) != NULL)
+	while (fgets(fileline, MINMALLOC, fd) != NULL)
 	{
-		if(flag == 1)
-			if(fileline[0] == '#' || fileline[0] == '\n')
+		if (flag == 1)
+			if (fileline[0] == '#' || fileline[0] == '\n')
 				continue;
 
 		bufoldsize = bufsize;
 		bufsize += strlen(fileline);
 		tmpbuf = buf;	buf = realloc(buf, bufsize + 1);
-		if(buf == NULL)
+		if (buf == NULL)
 		{
 //			err("no mem");
 			free(fileline);
@@ -202,30 +208,30 @@ char* readfiletomem(const char* filename, int flag)
 
 struct splitstr
 {
-	char* part;
+	char *part;
 };
 
-struct splitstr* strsplit(char *str, char *tok, int* count)
+struct splitstr *strsplit(char *str, char *tok, int *count)
 {
 	char *tmpstr = NULL;
 	struct splitstr *array = NULL, *tmparray = NULL;
 	*count = 0;
 
-	if(str == NULL || tok == NULL)
+	if (str == NULL || tok == NULL)
 		return NULL;
 
 	tmpstr = strtok(str, tok);
-	while(tmpstr != NULL)
+	while (tmpstr != NULL)
 	{
 		*count = *count + 1;
-		tmparray = array; array = (struct splitstr*)realloc(array, sizeof(struct splitstr*) * (*count));
-		if(array == NULL)
+		tmparray = array; array = (struct splitstr *)realloc(array, sizeof(struct splitstr *) * (*count));
+		if (array == NULL)
 		{
 //			err("no mem");
 			free(tmparray);
 			return NULL;
 		}
-		
+
 		(&array[(*count) - 1])->part = tmpstr;
 		tmpstr = strtok(NULL, tok);
 	}
@@ -233,34 +239,42 @@ struct splitstr* strsplit(char *str, char *tok, int* count)
 	return array;
 }
 
-char* ostrcat(char* value1, char* value2, int free1, int free2)
+char *ostrcat(char *value1, char *value2, int free1, int free2)
 {
 	int len = 0, len1 = 0, len2 = 0;
-	char* buf = NULL;
+	char *buf = NULL;
 
-	if(value1 == NULL && value2 == NULL) return NULL;
+	if (value1 == NULL && value2 == NULL)
+		return NULL;
 
-	if(value1 != NULL) len1 = strlen(value1);
-	if(value2 != NULL) len2 = strlen(value2);
+	if (value1 != NULL)
+		len1 = strlen(value1);
+	if (value2 != NULL)
+		len2 = strlen(value2);
 
 	len = len1 + len2 + 1;
 
-	if(free1 == 1)
+	if (free1 == 1)
 		buf = realloc(value1, len);
 	else
 		buf = malloc(len);
-	if(buf == NULL)
+	if (buf == NULL)
 	{
-		if(free1 == 1) free(value1);
-		if(free2 == 1) free(value2);
+		if (free1 == 1)
+			free(value1);
+		if (free2 == 1)
+			free(value2);
 		return NULL;
 	}
 
-	if(free1 == 0 && len1 > 0) memcpy(buf, value1, len1);
-	if(len2 > 0) memcpy(buf + len1, value2, len2);
+	if (free1 == 0 && len1 > 0)
+		memcpy(buf, value1, len1);
+	if (len2 > 0)
+		memcpy(buf + len1, value2, len2);
 	buf[len - 1] = '\0';
 
-	if(free2 == 1) free(value2);
+	if (free2 == 1)
+		free(value2);
 
 	//helpfull for memleak detect
 	//if(buf != NULL && strlen(buf) == 0x0b - 0x01)
@@ -269,79 +283,87 @@ char* ostrcat(char* value1, char* value2, int free1, int free2)
 	return buf;
 }
 
-char* ostrstr(char* str, char* search)
+char *ostrstr(char *str, char *search)
 {
-	char* ret = NULL;
+	char *ret = NULL;
 
-	if(str == NULL || search == NULL) return NULL;
+	if (str == NULL || search == NULL)
+		return NULL;
 	ret = strstr(str, search);
 
 	return ret;
 }
 
-char* string_replace(char *search, char *replace, char *string, int free1)
+char *string_replace(char *search, char *replace, char *string, int free1)
 {
-	char* searchpos = NULL;
-	char* tmpstr = NULL;
+	char *searchpos = NULL;
+	char *tmpstr = NULL;
 
-	if(string == NULL || search == NULL)
+	if (string == NULL || search == NULL)
 	{
 		tmpstr = ostrcat(tmpstr, string, 1, 0);
-		if(free1 == 1) free(string);
+		if (free1 == 1)
+			free(string);
 		return tmpstr;
 	}
 
 	searchpos = ostrstr(string, search);
 
-	if(searchpos == NULL)
+	if (searchpos == NULL)
 	{
 		tmpstr = ostrcat(tmpstr, string, 1, 0);
-		if(free1 == 1) free(string);
+		if (free1 == 1)
+			free(string);
 		return tmpstr;
 	}
 
 	tmpstr = strndup(string, searchpos - string);
-	if(replace != NULL)
+	if (replace != NULL)
 		tmpstr = ostrcat(tmpstr, replace, 1, 0);
 	tmpstr = ostrcat(tmpstr, string + (searchpos - string) + strlen(search), 1, 0);
 
-	if(free1 == 1) free(string);
+	if (free1 == 1)
+		free(string);
 
 	return tmpstr;
 }
 
-char* stringreplacechar(char *str, char c1, char c2)
+char *stringreplacechar(char *str, char c1, char c2)
 {
 	char *p1 = str;
 
-	if(str == NULL) return NULL;
+	if (str == NULL)
+		return NULL;
 
-	while(*p1 != '\0')
+	while (*p1 != '\0')
 	{
-		if(*p1 == c1) *p1 = c2;
+		if (*p1 == c1)
+			*p1 = c2;
 		p1++;
 	}
 
 	return str;
 }
 
-char* string_replace_all(char *search, char *replace, char *string, int free1)
+char *string_replace_all(char *search, char *replace, char *string, int free1)
 {
-	char* tmpstr = NULL;
-	char* searchpos = NULL;
+	char *tmpstr = NULL;
+	char *searchpos = NULL;
 
-	if(string == NULL || search == NULL)
+	if (string == NULL || search == NULL)
 	{
 		tmpstr = ostrcat(tmpstr, string, 1, 0);
-		if(free1 == 1) free(string);
+		if (free1 == 1)
+			free(string);
 		return tmpstr;
 	}
 
 	searchpos = strstr(string, search);
-	if(searchpos == NULL)
+	if (searchpos == NULL)
 	{
 		tmpstr = ostrcat(tmpstr, string, 1, 0);
-		if(free1 == 1) free(string);
+		if (free1 == 1)
+			free(string);
 		return tmpstr;
 	}
 
@@ -350,7 +372,7 @@ char* string_replace_all(char *search, char *replace, char *string, int free1)
 	int searchlen = strlen(search);
 	int replacelen = strlen(replace);
 
-	while(searchpos != NULL)
+	while (searchpos != NULL)
 	{
 		count++;
 		searchpos = strstr(searchpos + searchlen, search);
@@ -358,19 +380,20 @@ char* string_replace_all(char *search, char *replace, char *string, int free1)
 
 	int len = stringlen - (searchlen * count) + (replacelen * count);
 	tmpstr = calloc(1, len + 1);
-	if(tmpstr == NULL)
+	if (tmpstr == NULL)
 	{
 //		err("no mem");
 		tmpstr = ostrcat(tmpstr, string, 1, 0);
-		if(free1 == 1) free(string);
+		if (free1 == 1)
+			free(string);
 		return tmpstr;
 	}
 
-	len = 0;	
-	char* str = string;
-	char* tmp = tmpstr;
+	len = 0;
+	char *str = string;
+	char *tmp = tmpstr;
 	searchpos = strstr(str, search);
-	while(searchpos != NULL)
+	while (searchpos != NULL)
 	{
 		len = searchpos - str;
 		memcpy(tmp, str, len);
@@ -381,16 +404,17 @@ char* string_replace_all(char *search, char *replace, char *string, int free1)
 	}
 	memcpy(tmp, str, strlen(str));
 
-	if(free1 == 1) free(string);
+	if (free1 == 1)
+		free(string);
 
 	return tmpstr;
 }
 
-int ostrcmp(char* value1, char* value2)
+int ostrcmp(char *value1, char *value2)
 {
 	int ret = 1;
 
-	if(value1 != NULL && value2 != NULL)
+	if (value1 != NULL && value2 != NULL)
 		ret = strcmp(value1, value2);
 
 	return ret;

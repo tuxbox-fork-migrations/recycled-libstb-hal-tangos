@@ -14,7 +14,7 @@ struct AVFormatContext;
 
 class cPlayback
 {
-	friend class CStreamInfo2;
+		friend class CStreamInfo2;
 
 	private:
 		bool enabled;

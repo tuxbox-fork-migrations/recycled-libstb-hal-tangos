@@ -103,8 +103,10 @@ static inline int get_scale(M4V_DCPRED *pred, int n)
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void dcpred_set_qscale(M4V_DCPRED *pred, int qscale)
 {
-	if (qscale < 0) qscale = 0;
-	if (qscale > 31) qscale = 31;
+	if (qscale < 0)
+		qscale = 0;
+	if (qscale > 31)
+		qscale = 31;
 	pred->y_dc_scale = mpeg4_y_dc_scale_table[qscale];
 	pred->c_dc_scale = mpeg4_c_dc_scale_table[qscale];
 }

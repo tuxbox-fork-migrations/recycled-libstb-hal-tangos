@@ -144,7 +144,8 @@ static inline void m4v_stuffing(BW *p)
 
 	put_bits(p, 1, 0);
 	length = (- p->bitoffset) & 7;
-	if (length) put_bits(p, length, (1 << length) - 1);
+	if (length)
+		put_bits(p, length, (1 << length) - 1);
 }
 
 #endif // BITWRITER_H
