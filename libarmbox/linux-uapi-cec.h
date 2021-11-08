@@ -515,7 +515,6 @@ struct cec_event
 #define CEC_MSG_IMAGE_VIEW_ON				0x04
 #define CEC_MSG_TEXT_VIEW_ON				0x0d
 
-
 /* Routing Control Feature */
 
 /*
@@ -529,10 +528,8 @@ struct cec_event
 #define CEC_MSG_ROUTING_INFORMATION			0x81
 #define CEC_MSG_SET_STREAM_PATH				0x86
 
-
 /* Standby Feature */
 #define CEC_MSG_STANDBY					0x36
-
 
 /* One Touch Record Feature */
 #define CEC_MSG_RECORD_OFF				0x0b
@@ -608,7 +605,6 @@ struct cec_event
 
 #define CEC_MSG_RECORD_TV_SCREEN			0x0f
 
-
 /* Timer Programming Feature */
 #define CEC_MSG_CLEAR_ANALOGUE_TIMER			0x33
 /* Recording Sequence Operand (recording_seq) */
@@ -669,7 +665,6 @@ struct cec_event
 #define CEC_OP_PROG_ERROR_CLOCK_FAILURE			0x0a
 #define CEC_OP_PROG_ERROR_DUPLICATE			0x0e
 
-
 /* System Information Feature */
 #define CEC_MSG_CEC_VERSION				0x9e
 /* CEC Version Operand (cec_version) */
@@ -727,7 +722,6 @@ struct cec_event
 
 #define CEC_MSG_GIVE_FEATURES				0xa5	/* HDMI 2.0 */
 
-
 /* Deck Control Feature */
 #define CEC_MSG_DECK_CONTROL				0x42
 /* Deck Control Mode Operand (deck_control_mode) */
@@ -778,7 +772,6 @@ struct cec_event
 #define CEC_OP_PLAY_MODE_PLAY_SLOW_REV_MED		0x1a
 #define CEC_OP_PLAY_MODE_PLAY_SLOW_REV_MAX		0x1b
 
-
 /* Tuner Control Feature */
 #define CEC_MSG_GIVE_TUNER_DEVICE_STATUS		0x08
 #define CEC_MSG_SELECT_ANALOGUE_SERVICE			0x92
@@ -795,7 +788,6 @@ struct cec_event
 #define CEC_MSG_TUNER_STEP_DECREMENT			0x06
 #define CEC_MSG_TUNER_STEP_INCREMENT			0x05
 
-
 /* Vendor Specific Commands Feature */
 
 /*
@@ -810,7 +802,6 @@ struct cec_event
 #define CEC_MSG_VENDOR_REMOTE_BUTTON_DOWN		0x8a
 #define CEC_MSG_VENDOR_REMOTE_BUTTON_UP			0x8b
 
-
 /* OSD Display Feature */
 #define CEC_MSG_SET_OSD_STRING				0x64
 /* Display Control Operand (disp_ctl) */
@@ -818,11 +809,9 @@ struct cec_event
 #define CEC_OP_DISP_CTL_UNTIL_CLEARED			0x40
 #define CEC_OP_DISP_CTL_CLEAR				0x80
 
-
 /* Device OSD Transfer Feature */
 #define CEC_MSG_GIVE_OSD_NAME				0x46
 #define CEC_MSG_SET_OSD_NAME				0x47
-
 
 /* Device Menu Control Feature */
 #define CEC_MSG_MENU_REQUEST				0x8d
@@ -866,7 +855,6 @@ struct cec_event
 
 #define CEC_MSG_USER_CONTROL_RELEASED			0x45
 
-
 /* Remote Control Passthrough Feature */
 
 /*
@@ -874,7 +862,6 @@ struct cec_event
  *	CEC_MSG_USER_CONTROL_PRESSED
  *	CEC_MSG_USER_CONTROL_RELEASED
  */
-
 
 /* Power Status Feature */
 #define CEC_MSG_GIVE_DEVICE_POWER_STATUS		0x8f
@@ -884,7 +871,6 @@ struct cec_event
 #define CEC_OP_POWER_STATUS_STANDBY			1
 #define CEC_OP_POWER_STATUS_TO_ON			2
 #define CEC_OP_POWER_STATUS_TO_STANDBY			3
-
 
 /* General Protocol Messages */
 #define CEC_MSG_FEATURE_ABORT				0x00
@@ -897,7 +883,6 @@ struct cec_event
 #define CEC_OP_ABORT_UNDETERMINED			5
 
 #define CEC_MSG_ABORT					0xff
-
 
 /* System Audio Control Feature */
 
@@ -926,7 +911,6 @@ struct cec_event
 #define CEC_OP_AUD_FMT_ID_CEA861			0
 #define CEC_OP_AUD_FMT_ID_CEA861_CXT			1
 
-
 /* Audio Rate Control Feature */
 #define CEC_MSG_SET_AUDIO_RATE				0x9a
 /* Audio Rate Operand (audio_rate) */
@@ -938,7 +922,6 @@ struct cec_event
 #define CEC_OP_AUD_RATE_NARROW_FAST			5
 #define CEC_OP_AUD_RATE_NARROW_SLOW			6
 
-
 /* Audio Return Channel Control Feature */
 #define CEC_MSG_INITIATE_ARC				0xc0
 #define CEC_MSG_REPORT_ARC_INITIATED			0xc1
@@ -946,7 +929,6 @@ struct cec_event
 #define CEC_MSG_REQUEST_ARC_INITIATION			0xc3
 #define CEC_MSG_REQUEST_ARC_TERMINATION			0xc4
 #define CEC_MSG_TERMINATE_ARC				0xc5
-
 
 /* Dynamic Audio Lipsync Feature */
 /* Only for CEC 2.0 and up */
@@ -960,7 +942,6 @@ struct cec_event
 #define CEC_OP_AUD_OUT_COMPENSATED_DELAY		1
 #define CEC_OP_AUD_OUT_COMPENSATED_NO_DELAY		2
 #define CEC_OP_AUD_OUT_COMPENSATED_PARTIAL_DELAY	3
-
 
 /* Capability Discovery and Control Feature */
 #define CEC_MSG_CDC_MESSAGE				0xf8

@@ -211,7 +211,6 @@ int dh_mod_exp(uint8_t *dest, int dest_len, uint8_t *base, int base_len, uint8_t
 	BN_mod_exp(bn_dest, bn_base, bn_exp, bn_mod, ctx);
 	BN_CTX_free(ctx);
 
-
 	len = BN_num_bytes(bn_dest);
 	if (len > dest_len)
 	{
