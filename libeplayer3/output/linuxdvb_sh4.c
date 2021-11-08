@@ -781,7 +781,8 @@ int LinuxDvbGetFrameCount(Context_t *context __attribute__((unused)), unsigned l
 			linuxdvb_err("VIDEO_GET_PLAY_INFO: %s\n", strerror(errno));
 			ret = cERR_LINUXDVB_ERROR;
 		}
-		else linuxdvb_err("V: %llu\n", playInfo.frame_count);
+		else
+			linuxdvb_err("V: %llu\n", playInfo.frame_count);
 	}
 	else if (audiofd != -1)
 	{
@@ -791,7 +792,8 @@ int LinuxDvbGetFrameCount(Context_t *context __attribute__((unused)), unsigned l
 			linuxdvb_err("AUDIO_GET_PLAY_INFO: %s\n", strerror(errno));
 			ret = cERR_LINUXDVB_ERROR;
 		}
-		else linuxdvb_err("A: %llu\n", playInfo.frame_count);
+		else
+			linuxdvb_err("A: %llu\n", playInfo.frame_count);
 	}
 	else
 	{
@@ -963,7 +965,7 @@ static int Write(void *_context, void *_out)
 	audio = !strcmp("audio", out->type);
 
 	linuxdvb_printf(20, "DataLength=%u PrivateLength=%u Pts=%llu FrameRate=%f\n",
-	                out->len, out->extralen, out->pts, out->frameRate);
+		out->len, out->extralen, out->pts, out->frameRate);
 	linuxdvb_printf(20, "v%d a%d\n", video, audio);
 
 	if (video)

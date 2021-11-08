@@ -7,7 +7,7 @@
 #include "init.h"
 #include <config.h>
 
-typedef void (*cs_messenger) (unsigned int msg, unsigned int data);
+typedef void (*cs_messenger)(unsigned int msg, unsigned int data);
 
 inline void cs_api_init()
 {

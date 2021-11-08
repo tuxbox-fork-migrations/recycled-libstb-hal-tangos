@@ -195,7 +195,7 @@ static int PlaybackOpen(Context_t *context, PlayFiles_t *pFiles)
 			// mms is in reality called rtsp, and ffmpeg expects this
 			int len = strlen(uri) + 2;
 			char *tUri = (char *)malloc(strlen(uri) + 2);
-			snprintf(tUri,len,"rtsp%s",uri+3);
+			snprintf(tUri, len, "rtsp%s", uri + 3);
 			free(context->playback->uri);
 			context->playback->uri = tUri;
 		}
@@ -215,11 +215,11 @@ static int PlaybackOpen(Context_t *context, PlayFiles_t *pFiles)
 
 	pFiles->szFirstFile = context->playback->uri;
 	if ((context->container->Command(context, CONTAINER_ADD, extension) < 0) ||
-	    (!context->container->selectedContainer) ||
-	    (context->container->selectedContainer->Command(context, CONTAINER_INIT, pFiles) < 0))
+		(!context->container->selectedContainer) ||
+		(context->container->selectedContainer->Command(context, CONTAINER_INIT, pFiles) < 0))
 	{
 		playback_err("CONTAINER_ADD failed\n");
-		if(context->playback->uri)
+		if (context->playback->uri)
 		{
 			free(context->playback->uri);
 			context->playback->uri = NULL;
@@ -242,12 +242,12 @@ static int PlaybackClose(Context_t *context)
 	{
 		playback_err("container delete failed\n");
 	}
-	if(context->manager->audio)
+	if (context->manager->audio)
 		context->manager->audio->Command(context, MANAGER_DEL, NULL);
-	if(context->manager->video)
+	if (context->manager->video)
 		context->manager->video->Command(context, MANAGER_DEL, NULL);
-	if(context->manager->subtitle)
-	        context->manager->subtitle->Command(context, MANAGER_DEL, NULL);
+	if (context->manager->subtitle)
+		context->manager->subtitle->Command(context, MANAGER_DEL, NULL);
 	if (context->manager->chapter)
 		context->manager->chapter->Command(context, MANAGER_DEL, NULL);
 
@@ -387,8 +387,8 @@ static int32_t PlaybackContinue(Context_t *context)
 	playback_printf(10, "\n");
 
 	if (context->playback->isPlaying &&
-	   (context->playback->isPaused || context->playback->isForwarding ||
-	    context->playback->BackWard || context->playback->SlowMotion))
+		(context->playback->isPaused || context->playback->isForwarding ||
+			context->playback->BackWard || context->playback->SlowMotion))
 	{
 		if (context->playback->SlowMotion || context->playback->isForwarding || context->playback->BackWard)
 			context->output->Command(context, OUTPUT_CLEAR, NULL);
@@ -480,7 +480,7 @@ static int32_t PlaybackTerminate(Context_t *context)
 		}
 
 		ret = context->container->selectedContainer->Command(context, CONTAINER_STOP, NULL);
-		if(context && context->playback)
+		if (context && context->playback)
 		{
 			context->playback->isPaused     = 0;
 			context->playback->isPlaying    = 0;
@@ -489,7 +489,7 @@ static int32_t PlaybackTerminate(Context_t *context)
 			context->playback->SlowMotion   = 0;
 			context->playback->Speed        = 0;
 		}
-		if(context && context->output)
+		if (context && context->output)
 			context->output->Command(context, OUTPUT_STOP, NULL);
 	}
 	else
@@ -559,7 +559,7 @@ static int PlaybackFastBackward(Context_t *context, int *speed)
 
 	/* Audio only reverse play not supported */
 	if (context->playback->isVideo && !context->playback->isForwarding &&
-	   (!context->playback->isPaused || context->playback->isPlaying))
+		(!context->playback->isPaused || context->playback->isPlaying))
 	{
 		if ((*speed > 0) || (*speed < cMaxSpeed_fr))
 		{
@@ -797,26 +797,33 @@ static int32_t PlaybackSwitchAudio(Context_t *context, int32_t *track)
 	return ret;
 }
 
-static int PlaybackSwitchSubtitle(Context_t * context, int *track)
+static int PlaybackSwitchSubtitle(Context_t *context, int *track)
 {
 	int ret = cERR_PLAYBACK_NO_ERROR;
 
 	playback_printf(10, "Track: %d\n", *track);
 
-	if (context && context->playback && context->playback->isPlaying) {
-		if (context->manager && context->manager->subtitle) {
+	if (context && context->playback && context->playback->isPlaying)
+	{
+		if (context->manager && context->manager->subtitle)
+		{
 			int trackid;
 
-			if (context->manager->subtitle->Command(context, MANAGER_SET, track) < 0) {
+			if (context->manager->subtitle->Command(context, MANAGER_SET, track) < 0)
+			{
 				playback_err("manager set track failed\n");
 			}
 
 			context->manager->subtitle->Command(context, MANAGER_GET, &trackid);
-		} else {
+		}
+		else
+		{
 			ret = cERR_PLAYBACK_ERROR;
 			playback_err("no subtitle\n");
 		}
-	} else {
+	}
+	else
+	{
 		playback_err("not possible\n");
 		ret = cERR_PLAYBACK_ERROR;
 	}

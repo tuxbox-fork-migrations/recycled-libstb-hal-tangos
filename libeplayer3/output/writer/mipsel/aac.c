@@ -169,7 +169,7 @@ static int _writeData(WriterAVCallData_t *call, int type)
 	else // check LOAS header
 	{
 		if (!(call->len > 2 && call->data[0] == 0x56 && (call->data[1] >> 4) == 0xe &&
-		     ((uint32_t)(AV_RB16(call->data + 1) & 0x1FFF) + 3) == call->len))
+				((uint32_t)(AV_RB16(call->data + 1) & 0x1FFF) + 3) == call->len))
 		{
 			aac_err("parsing Data with wrong latm header. ignoring...\n");
 			return 0;

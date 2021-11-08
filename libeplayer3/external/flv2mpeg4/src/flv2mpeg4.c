@@ -139,10 +139,10 @@ static int write_pad_not_coded_frames(flv2mpeg4_CTX *pub_ctx, CONVCTX *c, BW *bw
 
 		// write frame
 		if (pub_ctx->write_packet_cb(pub_ctx->usr_data,
-		                             0,
-		                             0,//c->frame,
-		                             bw->buf,
-		                             bw->pos) < 0)
+				0,
+				0,//c->frame,
+				bw->buf,
+				bw->pos) < 0)
 		{
 			return -1;
 		}
@@ -181,7 +181,8 @@ static int write_m4v_picture_frame(flv2mpeg4_CTX *pub_ctx, CONVCTX *c, BR *br, B
 			if (vop.picture_type == M4V_I_TYPE)
 			{
 				mb.intra = 1;
-				if (decode_I_mb(br, &mb, flvpic->escape_type, flvpic->qscale) < 0) return -1;
+				if (decode_I_mb(br, &mb, flvpic->escape_type, flvpic->qscale) < 0)
+					return -1;
 				m4v_mb.qscale = vop.qscale;
 				copy_microblock(&mb, &m4v_mb);
 				m4v_encode_I_dcpred(&m4v_mb, &c->vol.dcpred, x, y);
@@ -189,7 +190,8 @@ static int write_m4v_picture_frame(flv2mpeg4_CTX *pub_ctx, CONVCTX *c, BR *br, B
 			}
 			else
 			{
-				if (decode_P_mb(br, &mb, flvpic->escape_type, flvpic->qscale) < 0) return -1;
+				if (decode_P_mb(br, &mb, flvpic->escape_type, flvpic->qscale) < 0)
+					return -1;
 				m4v_mb.qscale = vop.qscale;
 				copy_microblock(&mb, &m4v_mb);
 				m4v_encode_I_dcpred(&m4v_mb, &c->vol.dcpred, x, y);
@@ -203,10 +205,10 @@ static int write_m4v_picture_frame(flv2mpeg4_CTX *pub_ctx, CONVCTX *c, BR *br, B
 
 	// write frame
 	if (pub_ctx->write_packet_cb(pub_ctx->usr_data,
-	                             vop.picture_type == M4V_I_TYPE,
-	                             0,//c->frame,
-	                             bw->buf,
-	                             bw->pos) < 0)
+			vop.picture_type == M4V_I_TYPE,
+			0,//c->frame,
+			bw->buf,
+			bw->pos) < 0)
 	{
 		return -1;
 	}
@@ -224,8 +226,10 @@ static int write_m4v_frame(flv2mpeg4_CTX *pub_ctx, CONVCTX *c, BR *br, BW *bw, u
 	memset(&picture, 0, sizeof(picture));
 	init_dcpred(&c->vol.dcpred);
 
-	if (decode_picture_header(br, &picture) < 0) return -1;
-	if (c->width != picture.width || c->height != picture.height) return -1; //size changed..
+	if (decode_picture_header(br, &picture) < 0)
+		return -1;
+	if (c->width != picture.width || c->height != picture.height)
+		return -1; //size changed..
 
 	copy_vol(&picture, &c->vol);
 
@@ -235,7 +239,8 @@ static int write_m4v_frame(flv2mpeg4_CTX *pub_ctx, CONVCTX *c, BR *br, BW *bw, u
 	}
 	else
 	{
-		if (write_pad_not_coded_frames(pub_ctx, c, bw, time) < 0) return -1;
+		if (write_pad_not_coded_frames(pub_ctx, c, bw, time) < 0)
+			return -1;
 	}
 
 	if (write_m4v_picture_frame(pub_ctx, c, br, bw, &picture, time) < 0)

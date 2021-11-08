@@ -111,7 +111,7 @@ void Input::run()
 	init_keymap();
 	unlink("/tmp/neutrino.input");
 	mkfifo("/tmp/neutrino.input", 0600);
-	out_fd = open("/tmp/neutrino.input", O_RDWR|O_CLOEXEC|O_NONBLOCK);
+	out_fd = open("/tmp/neutrino.input", O_RDWR | O_CLOEXEC | O_NONBLOCK);
 	if (out_fd < 0)
 		hal_info("could not create /tmp/neutrino.input. good luck. error: %m\n");
 
@@ -120,16 +120,19 @@ void Input::run()
 		hal_info("no input devices /dev/input/eventX??\n");
 	else
 	{
-		while (n--) {
+		while (n--)
+		{
 			strcpy(inputstr + strlen("/dev/input/"), namelist[n]->d_name);
 			free(namelist[n]);
-			int fd = open(inputstr, O_RDWR|O_CLOEXEC|O_NONBLOCK);
-			if (fd < 0) {
+			int fd = open(inputstr, O_RDWR | O_CLOEXEC | O_NONBLOCK);
+			if (fd < 0)
+			{
 				hal_info("could not open %s:%m\n", inputstr);
 				continue;
 			}
 			ioctl(fd, EVIOCGBIT(0, EV_MAX), &bit);
-			if ((bit & (1 << EV_KEY)) == 0) {
+			if ((bit & (1 << EV_KEY)) == 0)
+			{
 				close(fd);
 				continue;
 			}
@@ -143,7 +146,8 @@ void Input::run()
 
 	fd_max++;
 	running = true;
-	while (running) {
+	while (running)
+	{
 		FD_ZERO(&rfds);
 		for (std::set<int>::iterator i = in_fds.begin(); i != in_fds.end(); ++i)
 			FD_SET((*i), &rfds);
@@ -154,18 +158,22 @@ void Input::run()
 		int ret = select(fd_max, &rfds, NULL, NULL, &timeout);
 		if (ret == 0) /* timed out */
 			continue;
-		if (ret < 0) {
+		if (ret < 0)
+		{
 			hal_info("input: select returned %d (%m)\n", ret);
 			continue;
 		}
 
-		for (std::set<int>::iterator i = in_fds.begin(); i != in_fds.end(); ++i) {
+		for (std::set<int>::iterator i = in_fds.begin(); i != in_fds.end(); ++i)
+		{
 			if (!FD_ISSET((*i), &rfds))
 				continue;
 
 			ret = read(*i, &in, sizeof(in));
-			if (ret != sizeof(in)) {
-				if (errno == ENODEV) {
+			if (ret != sizeof(in))
+			{
+				if (errno == ENODEV)
+				{
 					close(*i);
 					hal_info("input fd %d vanished?\n", *i);
 					in_fds.erase(i);
@@ -193,7 +201,8 @@ void hal_api_init()
 	if (!initialized)
 		hal_debug_init();
 	hal_info("%s begin, initialized=%d, debug=0x%02x\n", __func__, (int)initialized, debuglevel);
-	if (! glfb) {
+	if (! glfb)
+	{
 		int x = 1280, y = 720; /* default OSD FB resolution */
 		/*
 		 * export GLFB_RESOLUTION=720,576
@@ -203,7 +212,8 @@ void hal_api_init()
 		const char *p = NULL;
 		if (tmp)
 			p = strchr(tmp, ',');
-		if (p) {
+		if (p)
+		{
 			x = atoi(tmp);
 			y = atoi(p + 1);
 		}

@@ -9,7 +9,7 @@ int eDVBCIResourceManagerSession::receivedAPDU(const unsigned char *tag, const v
 	if (len)
 	{
 		for (int i = 0; i < len; i++)
-			printf("%02x ", ((const unsigned char*)data)[i]);
+			printf("%02x ", ((const unsigned char *)data)[i]);
 		printf("\n");
 	}
 	if ((tag[0] == 0x9f) && (tag[1] == 0x80))
@@ -27,7 +27,7 @@ int eDVBCIResourceManagerSession::receivedAPDU(const unsigned char *tag, const v
 					printf("nothing");
 				else
 					for (int i = 0; i < len; i++)
-						printf("%02x ", ((const unsigned char*)data)[i]);
+						printf("%02x ", ((const unsigned char *)data)[i]);
 				printf("\n");
 
 				if (state == stateFirstProfileEnquiry)

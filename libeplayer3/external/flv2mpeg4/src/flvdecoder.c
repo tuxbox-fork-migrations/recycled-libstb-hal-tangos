@@ -182,7 +182,8 @@ static inline int decode_DC(BR *p)
 		printf("illigal dc\n");
 		return -1;
 	}
-	if (level == 255) level = 128;
+	if (level == 255)
+		level = 128;
 
 //	printf("DC: %d\n", level);
 	return level;
@@ -225,7 +226,8 @@ static inline int decode_AC(BR *p, BLOCK *block, int escape_type, int i)
 				run = get_bits(p, 6);
 				level = get_bits(p, 8);
 				sign = level >= 128;
-				if (sign) level = 256 - level;
+				if (sign)
+					level = 256 - level;
 			}
 		}
 		else
@@ -235,7 +237,8 @@ static inline int decode_AC(BR *p, BLOCK *block, int escape_type, int i)
 			last = code >= rl_inter_last;
 
 			sign = get_bits(p, 1);
-			if (sign) level = -level;
+			if (sign)
+				level = -level;
 		}
 
 		i += run;
@@ -245,7 +248,8 @@ static inline int decode_AC(BR *p, BLOCK *block, int escape_type, int i)
 			return -1;
 		}
 		block->block[zig_zag_scan[i]] = level;
-		if (last) break;
+		if (last)
+			break;
 		i++;
 	}
 
@@ -270,7 +274,8 @@ static inline int decode_intra_block(BR *p, BLOCK *block, int escape_type, int c
 		return 0;
 	}
 
-	if (decode_AC(p, block, escape_type, 1) < 0) return -1;
+	if (decode_AC(p, block, escape_type, 1) < 0)
+		return -1;
 	return 0;
 }
 
@@ -283,7 +288,8 @@ static inline int decode_inter_block(BR *p, BLOCK *block, int escape_type, int c
 		return 0;
 	}
 
-	if (decode_AC(p, block, escape_type, 0) < 0) return -1;
+	if (decode_AC(p, block, escape_type, 0) < 0)
+		return -1;
 	return 0;
 }
 
@@ -293,7 +299,8 @@ static inline int get_intra_MCBPC(BR *br)
 	do
 	{
 		cbpc = get_vlc(br, vlc_table_intra_MCBPC, 6, 2);
-		if (cbpc < 0) return -1;
+		if (cbpc < 0)
+			return -1;
 	}
 	while (cbpc == 8);
 	return cbpc;
@@ -309,7 +316,8 @@ static inline int get_inter_MCBPC(BR *br)
 			return -2;
 		}
 		cbpc = get_vlc(br, vlc_table_inter_MCBPC, 7, 2);
-		if (cbpc < 0) return -1;
+		if (cbpc < 0)
+			return -1;
 	}
 	while (cbpc == 20);
 
@@ -375,7 +383,8 @@ static inline int decode_intra_mb_internal(BR *p, MICROBLOCK *mb, int escape_typ
 
 	for (i = 0; i < 6; i++)
 	{
-		if (decode_intra_block(p, &mb->block[i], escape_type, cbp & 32) != 0) return -1;
+		if (decode_intra_block(p, &mb->block[i], escape_type, cbp & 32) != 0)
+			return -1;
 		cbp += cbp;
 	}
 
@@ -423,7 +432,8 @@ static inline int decode_inter_mb_internal(BR *p, MICROBLOCK *mb, int escape_typ
 
 	for (i = 0; i < 6; i++)
 	{
-		if (decode_inter_block(p, &mb->block[i], escape_type, cbp & 32) != 0) return -1;
+		if (decode_inter_block(p, &mb->block[i], escape_type, cbp & 32) != 0)
+			return -1;
 		cbp += cbp;
 	}
 

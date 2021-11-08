@@ -50,9 +50,9 @@ extern cVideo *videoDecoder;
 #define hal_debug_z(args...) _hal_debug(HAL_DEBUG_DEMUX, thiz, args)
 
 #define dmx_err(_errfmt, _errstr, _revents) do { \
-	hal_info("%s " _errfmt " fd:%d, ev:0x%x %s pid:0x%04hx flt:0x%02hx\n", \
-		__func__, _errstr, fd, _revents, DMX_T[dmx_type], pid, flt); \
-} while(0);
+		hal_info("%s " _errfmt " fd:%d, ev:0x%x %s pid:0x%04hx flt:0x%02hx\n", \
+			__func__, _errstr, fd, _revents, DMX_T[dmx_type], pid, flt); \
+	} while(0);
 
 cDemux *videoDemux = NULL;
 cDemux *audioDemux = NULL;
@@ -61,7 +61,8 @@ cDemux *audioDemux = NULL;
 cDemux *pipVideoDemux[3] = { NULL, NULL, NULL };
 cDemux *pipAudioDemux[3] = { NULL, NULL, NULL };
 
-static const char *DMX_T[] = {
+static const char *DMX_T[] =
+{
 	"DMX_INVALID",
 	"DMX_VIDEO",
 	"DMX_AUDIO",
@@ -95,7 +96,8 @@ static int dmx_source[NUM_DEMUX] = { 0, 0, 0, 0 };
 #endif
 
 char dmxdev[32];
-static char* devname(int adapter, int demux) {
+static char *devname(int adapter, int demux)
+{
 	snprintf(dmxdev, sizeof(dmxdev), "/dev/dvb/adapter%d/demux%d", adapter, demux);
 	return dmxdev;
 }
@@ -122,7 +124,8 @@ static bool init[NUM_DEMUXDEV] = { false, false, false, false, false, false, fal
 #endif
 #endif
 
-typedef struct dmx_pdata {
+typedef struct dmx_pdata
+{
 	int last_source;
 	OpenThreads::Mutex *mutex;
 } dmx_pdata;
@@ -170,17 +173,19 @@ bool cDemux::Open(DMX_CHANNEL_TYPE pes_type, void * /*hVideoBuffer*/, int uBuffe
 
 static bool _open(cDemux *thiz, int num, int &fd, int &last_source, DMX_CHANNEL_TYPE dmx_type, int buffersize)
 {
-	int flags = O_RDWR|O_CLOEXEC;
+	int flags = O_RDWR | O_CLOEXEC;
 	int devnum = dmx_source[num];
-	if (last_source == devnum) {
+	if (last_source == devnum)
+	{
 		hal_debug_z("%s #%d: source (%d) did not change\n", __func__, num, last_source);
 		if (fd > -1)
 			return true;
 	}
-	if (fd > -1) {
+	if (fd > -1)
+	{
 		/* we changed source -> close and reopen the fd */
 		hal_debug_z("%s #%d: FD ALREADY OPENED fd = %d lastsource %d devnum %d\n",
-				__func__, num, fd, last_source, devnum);
+			__func__, num, fd, last_source, devnum);
 		close(fd);
 	}
 
@@ -194,7 +199,7 @@ static bool _open(cDemux *thiz, int num, int &fd, int &last_source, DMX_CHANNEL_
 		return false;
 	}
 	hal_debug_z("%s #%d pes_type: %s(%d), uBufferSize: %d fd: %d\n", __func__,
-		 num, DMX_T[dmx_type], dmx_type, buffersize, fd);
+		num, DMX_T[dmx_type], dmx_type, buffersize, fd);
 
 	/* this would actually need locking, but the worst that weill happen is, that
 	 * we'll DMX_SET_SOURCE twice per device, so don't bother... */
@@ -278,7 +283,7 @@ int cDemux::Read(unsigned char *buff, int len, int timeout)
 	int to = timeout;
 	struct pollfd ufds;
 	ufds.fd = fd;
-	ufds.events = POLLIN|POLLPRI|POLLERR;
+	ufds.events = POLLIN | POLLPRI | POLLERR;
 	ufds.revents = 0;
 
 	/* hack: if the frontend loses and regains lock, the demuxer often will not
@@ -289,7 +294,7 @@ int cDemux::Read(unsigned char *buff, int len, int timeout)
 
 	if (to > 0)
 	{
- retry:
+retry:
 		rc = ::poll(&ufds, 1, to);
 		if (ufds.fd != fd)
 		{
@@ -335,7 +340,8 @@ int cDemux::Read(unsigned char *buff, int len, int timeout)
 		}
 	}
 	if (ufds.fd != fd)	/* does this ever happen? and if, is it harmful? */
-	{			/* read(-1,...) will just return EBADF anyway... */
+	{
+		/* read(-1,...) will just return EBADF anyway... */
 		hal_info("%s:2 ========== fd has changed, %d->%d ==========\n", __func__, ufds.fd, fd);
 		return -1;
 	}
@@ -348,9 +354,9 @@ int cDemux::Read(unsigned char *buff, int len, int timeout)
 	return rc;
 }
 
-bool cDemux::sectionFilter(unsigned short _pid, const unsigned char * const filter,
-			   const unsigned char * const mask, int len, int timeout,
-			   const unsigned char * const negmask)
+bool cDemux::sectionFilter(unsigned short _pid, const unsigned char *const filter,
+	const unsigned char *const mask, int len, int timeout,
+	const unsigned char *const negmask)
 {
 	struct dmx_sct_filter_params s_flt;
 	memset(&s_flt, 0, sizeof(s_flt));
@@ -371,7 +377,7 @@ bool cDemux::sectionFilter(unsigned short _pid, const unsigned char * const filt
 	if (negmask != NULL)
 		memcpy(s_flt.filter.mode, negmask, len);
 
-	s_flt.flags = DMX_IMMEDIATE_START|DMX_CHECK_CRC;
+	s_flt.flags = DMX_IMMEDIATE_START | DMX_CHECK_CRC;
 
 	int to = 0;
 	switch (filter[0])
@@ -460,13 +466,13 @@ bool cDemux::sectionFilter(unsigned short _pid, const unsigned char * const filt
 		s_flt.timeout = to;
 
 	hal_debug("%s #%d pid:0x%04hx fd:%d type:%s len:%d to:%d flags:%x flt[0]:%02x\n", __func__, num,
-		pid, fd, DMX_T[dmx_type], len, s_flt.timeout,s_flt.flags, s_flt.filter.filter[0]);
+		pid, fd, DMX_T[dmx_type], len, s_flt.timeout, s_flt.flags, s_flt.filter.filter[0]);
 #if 0
-	fprintf(stderr,"filt: ");for(int i=0;i<FILTER_LENGTH;i++)fprintf(stderr,"%02hhx ",s_flt.filter[i]);fprintf(stderr,"\n");
-	fprintf(stderr,"mask: ");for(int i=0;i<FILTER_LENGTH;i++)fprintf(stderr,"%02hhx ",s_flt.mask  [i]);fprintf(stderr,"\n");
-	fprintf(stderr,"posi: ");for(int i=0;i<FILTER_LENGTH;i++)fprintf(stderr,"%02hhx ",s_flt.positive[i]);fprintf(stderr,"\n");
+	fprintf(stderr, "filt: "); for (int i = 0; i < FILTER_LENGTH; i++)fprintf(stderr, "%02hhx ", s_flt.filter[i]); fprintf(stderr, "\n");
+	fprintf(stderr, "mask: "); for (int i = 0; i < FILTER_LENGTH; i++)fprintf(stderr, "%02hhx ", s_flt.mask  [i]); fprintf(stderr, "\n");
+	fprintf(stderr, "posi: "); for (int i = 0; i < FILTER_LENGTH; i++)fprintf(stderr, "%02hhx ", s_flt.positive[i]); fprintf(stderr, "\n");
 #endif
-	ioctl (fd, DMX_STOP);
+	ioctl(fd, DMX_STOP);
 	if (ioctl(fd, DMX_SET_FILTER, &s_flt) < 0)
 		return false;
 
@@ -593,7 +599,8 @@ void cDemux::removePid(unsigned short Pid)
 	}
 	for (std::vector<pes_pids>::iterator i = pesfds.begin(); i != pesfds.end(); ++i)
 	{
-		if ((*i).pid == Pid) {
+		if ((*i).pid == Pid)
+		{
 			hal_debug("removePid: removing demux fd %d pid 0x%04x\n", fd, Pid);
 			if (ioctl(fd, DMX_REMOVE_PID, Pid) < 0)
 				hal_info("%s: (DMX_REMOVE_PID, 0x%04hx): %m\n", __func__, Pid);
@@ -604,7 +611,7 @@ void cDemux::removePid(unsigned short Pid)
 	hal_info("%s pid 0x%04x not found\n", __FUNCTION__, Pid);
 }
 
-void cDemux::getSTC(int64_t * STC)
+void cDemux::getSTC(int64_t *STC)
 {
 	/* apparently I can only get the PTS of the video decoder,
 	 * but that's good enough for dvbsub */
@@ -626,7 +633,8 @@ int cDemux::getUnit(void)
 
 bool cDemux::SetSource(int unit, int source)
 {
-	if (unit >= NUM_DEMUX || unit < 0) {
+	if (unit >= NUM_DEMUX || unit < 0)
+	{
 		hal_info_c("%s: unit (%d) out of range, NUM_DEMUX %d\n", __func__, unit, NUM_DEMUX);
 		return false;
 	}
@@ -640,7 +648,8 @@ bool cDemux::SetSource(int unit, int source)
 
 int cDemux::GetSource(int unit)
 {
-	if (unit >= NUM_DEMUX || unit < 0) {
+	if (unit >= NUM_DEMUX || unit < 0)
+	{
 		hal_info_c("%s: unit (%d) out of range, NUM_DEMUX %d\n", __func__, unit, NUM_DEMUX);
 		return -1;
 	}
