@@ -58,27 +58,6 @@ hw_caps_t *get_hwcaps(void)
 	strcpy(caps.boxname, "DUO");
 	strcpy(caps.boxarch, "BCM7335");
 #endif
-#if BOXMODEL_DM8000
-	initialized = 1;
-	caps.has_fan = 1;
-	caps.has_CI = 4;
-	caps.can_cec = 0;
-	caps.can_shutdown = 1;
-	caps.display_xres = 400;
-	caps.display_yres = 240;
-	caps.display_type = HW_DISPLAY_GFX;
-	caps.display_can_deepstandby = 1;
-	caps.display_can_set_brightness = 1;
-	caps.display_has_statusline = 1;
-	caps.display_has_colon = 0;
-	caps.has_button_timer = 1;
-	caps.has_HDMI = 1;			// wrong (has only DVI), only for testing
-	caps.has_SCART = 2;
-//	caps.has_SCART_input = 1;
-//	caps.has_DVI = 1;
-	strcpy(caps.boxvendor, "DM");
-	strcpy(caps.boxname, "8000HD");
-	strcpy(caps.boxarch, "BCM7400D2");
-#endif
+
 	return &caps;
 }
