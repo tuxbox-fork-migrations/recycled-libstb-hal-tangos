@@ -30,6 +30,9 @@ inline void cs_api_exit()
      && !BOXMODEL_MULTIBOXSE \
      && !BOXMODEL_OSMIO4K \
      && !BOXMODEL_OSMIO4KPLUS \
+     && !BOXMODEL_SF8008 \
+     && !BOXMODEL_SF8008M \
+     && !BOXMODEL_USTYM4KPRO \
     )
 void cs_register_messenger(cs_messenger messenger);
 #else
