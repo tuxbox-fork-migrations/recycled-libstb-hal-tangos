@@ -66,7 +66,7 @@
 
 #define CEC_FALLBACK_DEVICE "/dev/cec0"
 #define CEC_HDMIDEV "/dev/hdmi_cec"
-#if BOXMODEL_H7
+#if BOXMODEL_H7 || BOXMODEL_H9COMBO
 #define RC_DEVICE  "/dev/input/event2"
 #else
 #define RC_DEVICE  "/dev/input/event1"

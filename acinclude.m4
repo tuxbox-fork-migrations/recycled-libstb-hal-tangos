@@ -159,7 +159,7 @@ AC_ARG_WITH(boxtype,
 		generic|armbox|mipsbox)
 			BOXTYPE="$withval"
 		;;
-		hd51|multibox|multiboxse|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k)
+		hd51|multibox|multiboxse|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k|sf8008|sf8008m|ustym4kpro|h9combo)
 			BOXTYPE="armbox"
 			BOXMODEL="$withval"
 		;;
@@ -175,11 +175,11 @@ AC_ARG_WITH(boxtype,
 
 AC_ARG_WITH(boxmodel,
 	AS_HELP_STRING([--with-boxmodel], [valid for generic: raspi])
-AS_HELP_STRING([], [valid for armbox: hd51, multibox, multiboxse, hd60, hd61, bre2ze4k, osmini4k, osmio4k, osmio4kplus, h7, vusolo4k, vuduo4k, vuultimo4k, vuzero4k, vuuno4kse, vuuno4k])
+AS_HELP_STRING([], [valid for armbox: hd51, multibox, multiboxse, hd60, hd61, bre2ze4k, osmini4k, osmio4k, osmio4kplus, h7, vusolo4k, vuduo4k, vuultimo4k, vuzero4k, vuuno4kse, vuuno4k, sf8008, sf8008m, ustym4kpro, h9combo])
 AS_HELP_STRING([], [valid for mipsbox: vuduo, vuduo2, gb800se, osnino, osninoplus, osninopro])
 AS_HELP_STRING([], [valid for generic: raspi]),
 	[case "${withval}" in
-		hd51|multibox|multiboxse|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k)
+		hd51|multibox|multiboxse|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k|sf8008|sf8008m|ustym4kpro|h9combo)
 			if test "$BOXTYPE" = "armbox"; then
 				BOXMODEL="$withval"
 			else
@@ -238,13 +238,20 @@ AM_CONDITIONAL(BOXMODEL_OSNINO, test "$BOXMODEL" = "osnino")
 AM_CONDITIONAL(BOXMODEL_OSNINOPLUS, test "$BOXMODEL" = "osninoplus")
 AM_CONDITIONAL(BOXMODEL_OSNINOPRO, test "$BOXMODEL" = "osninopro")
 
+AM_CONDITIONAL(BOXMODEL_SF8008, test "$BOXMODEL" = "sf8008")
+AM_CONDITIONAL(BOXMODEL_SF8008M, test "$BOXMODEL" = "sf8008m")
+
+AM_CONDITIONAL(BOXMODEL_USTYM4KPRO, test "$BOXMODEL" = "ustym4kpro")
+
+AM_CONDITIONAL(BOXMODEL_H9COMBO, test "$BOXMODEL" = "h9combo")
+
 AM_CONDITIONAL(BOXMODEL_RASPI, test "$BOXMODEL" = "raspi")
 
 AM_CONDITIONAL(BOXMODEL_VUPLUS_ALL, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k"  -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k" -o "$BOXMODEL" = "vuduo")
 AM_CONDITIONAL(BOXMODEL_VUPLUS_ARM, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k"  -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k")
 AM_CONDITIONAL(BOXMODEL_VUPLUS_MIPS, test "$BOXMODEL" = "vuduo" -o "$BOXMODEL" = "vuduo2")
 
-AM_CONDITIONAL(BOXMODEL_HISILICON, test "$BOXMODEL" = "hd60" -o "$BOXMODEL" = "hd61" -o "$BOXMODEL" = "multibox" -o "$BOXMODEL" = "multiboxse")
+AM_CONDITIONAL(BOXMODEL_HISILICON, test "$BOXMODEL" = "hd60" -o "$BOXMODEL" = "hd61" -o "$BOXMODEL" = "multibox" -o "$BOXMODEL" = "multiboxse" -o "$BOXMODEL" = "sf8008" -o "$BOXMODEL" = "sf8008m" -o "$BOXMODEL" = "ustym4kpro" -o "$BOXMODEL" = "h9combo")
 
 if test "$BOXTYPE" = "generic"; then
 	AC_DEFINE(HAVE_GENERIC_HARDWARE, 1, [building for a generic device like a standard PC])
@@ -301,6 +308,14 @@ elif test "$BOXMODEL" = "osmio4k"; then
 	AC_DEFINE(BOXMODEL_OSMIO4K, 1, [osmio4k])
 elif test "$BOXMODEL" = "osmio4kplus"; then
 	AC_DEFINE(BOXMODEL_OSMIO4KPLUS, 1, [osmio4kplus])
+elif test "$BOXMODEL" = "sf8008"; then
+	AC_DEFINE(BOXMODEL_SF8008, 1, [sf8008])
+elif test "$BOXMODEL" = "sf8008m"; then
+	AC_DEFINE(BOXMODEL_SF8008M, 1, [sf8008m])
+elif test "$BOXMODEL" = "ustym4kpro"; then
+	AC_DEFINE(BOXMODEL_USTYM4KPRO, 1, [ustym4kpro])
+elif test "$BOXMODEL" = "h9combo"; then
+	AC_DEFINE(BOXMODEL_H9COMBO, 1, [h9combo])
 fi
 
 # all vuplus BOXMODELs
@@ -326,7 +341,7 @@ esac
 
 # all hisilicon BOXMODELs
 case "$BOXMODEL" in
-	hd60|hd61|multibox|multiboxse)
+	hd60|hd61|multibox|multiboxse|sf8008|sf8008m|ustym4kpro|h9combo)
 		AC_DEFINE(BOXMODEL_HISILICON, 1, [hisilicon])
 	;;
 esac

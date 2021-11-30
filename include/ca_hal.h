@@ -5,6 +5,9 @@
      && !BOXMODEL_MULTIBOXSE \
      && !BOXMODEL_OSMIO4K \
      && !BOXMODEL_OSMIO4KPLUS \
+     && !BOXMODEL_SF8008 \
+     && !BOXMODEL_SF8008M \
+     && !BOXMODEL_USTYM4KPRO \
     )
 #include "ca_ci.h"
 #else
