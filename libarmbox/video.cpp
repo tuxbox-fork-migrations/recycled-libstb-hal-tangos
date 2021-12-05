@@ -1209,7 +1209,7 @@ void cVideo::SetColorFormat(COLOR_FORMAT color_format)
 void cVideo::SetHDMIColorimetry(HDMI_COLORIMETRY hdmi_colorimetry)
 {
 	const char *p = NULL;
-	switch (hdmi_mode)
+	switch (hdmi_colorimetry)
 	{
 		case HDMI_COLORIMETRY_AUTO:
 			p = "auto";
