@@ -33,6 +33,7 @@ inline void cs_api_exit()
      && !BOXMODEL_SF8008 \
      && !BOXMODEL_SF8008M \
      && !BOXMODEL_USTYM4KPRO \
+     && !BOXMODEL_H9 \
     )
 void cs_register_messenger(cs_messenger messenger);
 #else
