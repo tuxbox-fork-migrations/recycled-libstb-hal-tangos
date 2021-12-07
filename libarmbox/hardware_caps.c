@@ -459,7 +459,7 @@ hw_caps_t *get_hwcaps(void)
 	strcpy(caps.boxname, "Zgemma H9Combo/Twin");
 	strcpy(caps.boxarch, "HI3798M");
 #endif
-#if BOXMODEL_H9S
+#if BOXMODEL_H9
 	initialized = 1;
 	caps.has_CI = 0;
 	caps.can_cec = 1;
@@ -476,7 +476,7 @@ hw_caps_t *get_hwcaps(void)
 	caps.has_HDMI = 1;
 	strcpy(caps.startup_file, "");
 	strcpy(caps.boxvendor, "AirDigital");
-	strcpy(caps.boxname, "Zgemma H9S");
+	strcpy(caps.boxname, "Zgemma H9s/H9.2s");
 	strcpy(caps.boxarch, "HI3798M");
 #endif
 	return &caps;
