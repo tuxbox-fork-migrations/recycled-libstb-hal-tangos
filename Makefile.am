@@ -55,11 +55,35 @@ SUBDIRS += libarmbox
 libstb_hal_la_LIBADD += \
 	libarmbox/libarmbox.la
 else
+if BOXMODEL_SF8008
+SUBDIRS += libarmbox
+libstb_hal_la_LIBADD += \
+	libarmbox/libarmbox.la
+else
+if BOXMODEL_SF8008M
+SUBDIRS += libarmbox
+libstb_hal_la_LIBADD += \
+	libarmbox/libarmbox.la
+else
+if BOXMODEL_USTYM4KPRO
+SUBDIRS += libarmbox
+libstb_hal_la_LIBADD += \
+	libarmbox/libarmbox.la
+else
+if BOXMODEL_H9
+SUBDIRS += libarmbox
+libstb_hal_la_LIBADD += \
+	libarmbox/libarmbox.la
+else
 #libstb_hal_test_LDADD += -lasound
 SUBDIRS += libarmbox libdvbci
 libstb_hal_la_LIBADD += \
 	libarmbox/libarmbox.la \
 	libdvbci/libdvbci.la
+endif
+endif
+endif
+endif
 endif
 endif
 endif
