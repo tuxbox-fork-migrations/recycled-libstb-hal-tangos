@@ -23,6 +23,15 @@ typedef enum
 	ANALOG_SCART_MASK = 0x10
 } analog_mode_t;
 
+
+typedef enum
+{
+	HDMI_COLORIMETRY_AUTO,
+	HDMI_COLORIMETRY_BT2020NCL,
+	HDMI_COLORIMETRY_BT2020CL,
+	HDMI_COLORIMETRY_BT709
+} HDMI_COLORIMETRY;
+
 typedef enum
 {
 	COLORFORMAT_RGB = 0x10, // keep compatible with analog_mode_t
@@ -275,6 +284,7 @@ class cVideo
 		int  StartVBI(unsigned short) { return 0; };
 		int  StopVBI(void) { return 0; };
 		void SetDemux(cDemux *dmx);
+		void SetHDMIColorimetry(HDMI_COLORIMETRY hdmi_colorimetry);
 		void SetColorFormat(COLOR_FORMAT color_format);
 		bool GetScreenImage(unsigned char *&data, int &xres, int &yres, bool get_video = true, bool get_osd = false, bool scale_to_video = false);
 };
