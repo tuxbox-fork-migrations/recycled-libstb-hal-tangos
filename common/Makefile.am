@@ -42,8 +42,28 @@ if BOXMODEL_OSMIO4KPLUS
 libcommon_la_SOURCES = \
 	ca.cpp
 else
+if BOXMODEL_SF8008
+libcommon_la_SOURCES = \
+	ca.cpp
+else
+if BOXMODEL_SF8008M
+libcommon_la_SOURCES = \
+	ca.cpp
+else
+if BOXMODEL_USTYM4KPRO
+libcommon_la_SOURCES = \
+	ca.cpp
+else
+if BOXMODEL_H9
+libcommon_la_SOURCES = \
+	ca.cpp
+else
 libcommon_la_SOURCES = \
 	ca_ci.cpp
+endif
+endif
+endif
+endif
 endif
 endif
 endif
