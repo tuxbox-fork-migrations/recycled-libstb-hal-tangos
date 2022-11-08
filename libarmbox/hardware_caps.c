@@ -497,5 +497,23 @@ hw_caps_t *get_hwcaps(void)
 	strcpy(caps.boxname, "E4HD 4K ULTRA");
 	strcpy(caps.boxarch, "BCM7252S");
 #endif
-	return &caps;
+#if BOXMODEL_E4HDULTRA
+	initialized = 1;
+	caps.has_CI = 1;
+	caps.can_cec = 1;
+	caps.can_shutdown = 1;
+	caps.display_xres = 220;
+	caps.display_yres = 176;
+	caps.display_type = HW_DISPLAY_GFX;
+	caps.display_can_deepstandby = 0;
+	caps.display_can_set_brightness = 1;
+	caps.display_has_statusline = 0;
+	caps.display_has_colon = 0;
+	caps.has_button_timer = 1;
+	caps.has_HDMI = 1;
+	strcpy(caps.boxvendor, "PROTEK");
+	strcpy(caps.boxname, "PROTEK 4K");
+	strcpy(caps.boxarch, "BCM7252S");
+#endif
+return &caps;
 }
