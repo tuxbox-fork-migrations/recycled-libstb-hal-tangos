@@ -159,7 +159,7 @@ AC_ARG_WITH(boxtype,
 		generic|armbox|mipsbox)
 			BOXTYPE="$withval"
 		;;
-		hd51|multibox|multiboxse|e4hdultra|protek4k|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k|sf8008|sf8008m|ustym4kpro|h9combo|h9)
+		hd51|multibox|multiboxse|e4hdultra|protek4k|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuduo4kse|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k|sf8008|sf8008m|ustym4kpro|h9combo|h9)
 			BOXTYPE="armbox"
 			BOXMODEL="$withval"
 		;;
@@ -175,11 +175,11 @@ AC_ARG_WITH(boxtype,
 
 AC_ARG_WITH(boxmodel,
 	AS_HELP_STRING([--with-boxmodel], [valid for generic: raspi])
-AS_HELP_STRING([], [valid for armbox: hd51, multibox, multiboxse, e4hdultra, protek4k, hd60, hd61, bre2ze4k, osmini4k, osmio4k, osmio4kplus, h7, vusolo4k, vuduo4k, vuultimo4k, vuzero4k, vuuno4kse, vuuno4k, sf8008, sf8008m, ustym4kpro, h9combo, h9)])
+AS_HELP_STRING([], [valid for armbox: hd51, multibox, multiboxse, e4hdultra, protek4k, hd60, hd61, bre2ze4k, osmini4k, osmio4k, osmio4kplus, h7, vusolo4k, vuduo4k, vuduo4kse, vuultimo4k, vuzero4k, vuuno4kse, vuuno4k, sf8008, sf8008m, ustym4kpro, h9combo, h9)])
 AS_HELP_STRING([], [valid for mipsbox: vuduo, vuduo2, gb800se, osnino, osninoplus, osninopro])
 AS_HELP_STRING([], [valid for generic: raspi]),
 	[case "${withval}" in
-		hd51|multibox|multiboxse|e4hdultra|protek4k|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k|sf8008|sf8008m|ustym4kpro|h9combo|h9)
+		hd51|multibox|multiboxse|e4hdultra|protek4k|hd60|hd61|bre2ze4k|osmini4k|osmio4k|osmio4kplus|h7|vusolo4k|vuduo4k|vuduo4kse|vuultimo4k|vuzero4k|vuuno4kse|vuuno4k|sf8008|sf8008m|ustym4kpro|h9combo|h9)
 			if test "$BOXTYPE" = "armbox"; then
 				BOXMODEL="$withval"
 			else
@@ -230,6 +230,7 @@ AM_CONDITIONAL(BOXMODEL_OSMIO4KPLUS, test "$BOXMODEL" = "osmio4kplus")
 
 AM_CONDITIONAL(BOXMODEL_VUSOLO4K, test "$BOXMODEL" = "vusolo4k")
 AM_CONDITIONAL(BOXMODEL_VUDUO4K, test "$BOXMODEL" = "vuduo4k")
+AM_CONDITIONAL(BOXMODEL_VUDUO4KSE, test "$BOXMODEL" = "vuduo4kse")
 AM_CONDITIONAL(BOXMODEL_VUULTIMO4K, test "$BOXMODEL" = "vuultimo4k")
 AM_CONDITIONAL(BOXMODEL_VUUNO4KSE, test "$BOXMODEL" = "vuuno4kse")
 AM_CONDITIONAL(BOXMODEL_VUUNO4K, test "$BOXMODEL" = "vuuno4k")
@@ -252,8 +253,8 @@ AM_CONDITIONAL(BOXMODEL_H9, test "$BOXMODEL" = "h9")
 
 AM_CONDITIONAL(BOXMODEL_RASPI, test "$BOXMODEL" = "raspi")
 
-AM_CONDITIONAL(BOXMODEL_VUPLUS_ALL, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k"  -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k" -o "$BOXMODEL" = "vuduo")
-AM_CONDITIONAL(BOXMODEL_VUPLUS_ARM, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k"  -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k")
+AM_CONDITIONAL(BOXMODEL_VUPLUS_ALL, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k" -o "$BOXMODEL" = "vuduo4kse" -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k" -o "$BOXMODEL" = "vuduo")
+AM_CONDITIONAL(BOXMODEL_VUPLUS_ARM, test "$BOXMODEL" = "vusolo4k" -o "$BOXMODEL" = "vuduo4k" -o "$BOXMODEL" = "vuduo4kse" -o "$BOXMODEL" = "vuultimo4k" -o "$BOXMODEL" = "vuzero4k" -o "$BOXMODEL" = "vuuno4kse" -o "$BOXMODEL" = "vuuno4k")
 AM_CONDITIONAL(BOXMODEL_VUPLUS_MIPS, test "$BOXMODEL" = "vuduo" -o "$BOXMODEL" = "vuduo2")
 
 AM_CONDITIONAL(BOXMODEL_HISILICON, test "$BOXMODEL" = "hd60" -o "$BOXMODEL" = "hd61" -o "$BOXMODEL" = "multibox" -o "$BOXMODEL" = "multiboxse" -o "$BOXMODEL" = "sf8008" -o "$BOXMODEL" = "sf8008m" -o "$BOXMODEL" = "ustym4kpro" -o "$BOXMODEL" = "h9combo" -o "$BOXMODEL" = "h9")
@@ -293,6 +294,8 @@ elif test "$BOXMODEL" = "vusolo4k"; then
 	AC_DEFINE(BOXMODEL_VUSOLO4K, 1, [vusolo4k])
 elif test "$BOXMODEL" = "vuduo4k"; then
 	AC_DEFINE(BOXMODEL_VUDUO4K, 1, [vuduo4k])
+elif test "$BOXMODEL" = "vuduo4kse"; then
+	AC_DEFINE(BOXMODEL_VUDUO4KSE, 1, [vuduo4kse])
 elif test "$BOXMODEL" = "vuultimo4k"; then
 	AC_DEFINE(BOXMODEL_VUULTIMO4K, 1, [vuultimo4k])
 elif test "$BOXMODEL" = "vuzero4k"; then
@@ -331,14 +334,14 @@ fi
 
 # all vuplus BOXMODELs
 case "$BOXMODEL" in
-	vusolo4k|vuduo4k|vuultimo4k|vuuno4k|vuuno4kse|vuzero4k|vuduo|vuduo2)
+	vusolo4k|vuduo4k|vuduo4kse|vuultimo4k|vuuno4k|vuuno4kse|vuzero4k|vuduo|vuduo2)
 		AC_DEFINE(BOXMODEL_VUPLUS_ALL, 1, [vuplus_all])
 	;;
 esac
 
 # all vuplus arm BOXMODELs
 case "$BOXMODEL" in
-	vusolo4k|vuduo4k|vuultimo4k|vuuno4k|vuuno4kse|vuzero4k)
+	vusolo4k|vuduo4k|vuduo4kse|vuultimo4k|vuuno4k|vuuno4kse|vuzero4k)
 		AC_DEFINE(BOXMODEL_VUPLUS_ARM, 1, [vuplus_arm])
 	;;
 esac
