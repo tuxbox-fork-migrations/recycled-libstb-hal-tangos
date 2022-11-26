@@ -498,7 +498,7 @@ hw_caps_t *get_hwcaps(void)
 	strcpy(caps.boxname, "E4HD 4K ULTRA");
 	strcpy(caps.boxarch, "BCM7252S");
 #endif
-#if BOXMODEL_E4HDULTRA
+#if BOXMODEL_PROTEK4K
 	initialized = 1;
 	caps.has_CI = 1;
 	caps.can_cec = 1;
